@@ -8,14 +8,12 @@ public class ColorScanner : MonoBehaviour
     [SerializeField] private float _rayDistance = 10f;
     [SerializeField] private float _emissionIntensity = 3f;
     [SerializeField] private float _scanRadius = 1.5f;
-    [SerializeField] private Hold holding;
+    
     private Material _targetSlotMaterial;
     private bool _isProcessing = false;
+    private bool holding_scanner = false;
 
-    private void Start()
-    {
-        holding = FindAnyObjectByType<Hold>();
-    }
+   
     void Awake()
     {
 
@@ -47,17 +45,26 @@ public class ColorScanner : MonoBehaviour
     {
         if (_isProcessing || _targetSlotMaterial == null)
             return;
-
         Collider[] hits = Physics.OverlapSphere(_rayOrigin.position, _scanRadius);
 
         foreach (Collider hit in hits)
         {
             if (hit.TryGetComponent<Box>(out Box boxData))
             {
+               
                 ApplyEmissionEffect(boxData.color);
                 return;
+                
             }
         }
+    }
+    private void OnMouseDown()
+    {
+        holding_scanner = true;
+    }
+    private void OnMouseUp()
+    {
+        holding_scanner = false;
     }
     private void OnDrawGizmosSelected()
     {
@@ -75,9 +82,8 @@ public class ColorScanner : MonoBehaviour
     }
     private void ApplyEmissionEffect(int colorCode)
     {
-        if (holding.scanner_holding)
+        if (holding_scanner==true)
         {
-            
             Color targetColor = GetColorFromInt(colorCode) * _emissionIntensity;
             _isProcessing = true;
 

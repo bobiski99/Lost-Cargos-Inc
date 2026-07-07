@@ -70,6 +70,7 @@ public class Hold : MonoBehaviour
     {
         if (CompareTag("scanner"))
         {
+            
             scanner_holding = true;
         }
             
@@ -85,7 +86,10 @@ public class Hold : MonoBehaviour
     
     void OnMouseUp()
     {
-        scanner_holding = false;
+        if (CompareTag("scanner"))
+        {
+            scanner_holding = false;
+        }
         transform.DORotate(StarterRot, 0.5f).SetEase(Ease.OutElastic);
         Box bx = GetComponent<Box>();
         bool isCat = bx != null && bx.cat;
@@ -208,7 +212,7 @@ public class Hold : MonoBehaviour
 
                     catObject.DOKill();
 
-                    catObject.DOMoveX(catStartX - 4f, 0.3f).SetEase(Ease.OutBack);
+                    catObject.DOMoveX(catStartX - 6f, 0.3f).SetEase(Ease.OutBack);
 
                 }
                 if (ItsSellable)

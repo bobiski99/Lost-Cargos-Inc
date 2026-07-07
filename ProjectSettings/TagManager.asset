@@ -12,6 +12,7 @@ TagManager:
   - seal
   - cat_pivot
   - scanner
+  - xray
   layers:
   - Default
   - TransparentFX

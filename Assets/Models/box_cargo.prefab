@@ -137,6 +137,7 @@ MonoBehaviour:
   deliver: {fileID: 0}
   ItsSellable: 1
   StarterPoint: {x: 0, y: 0, z: 0}
+  scanner_holding: 0
 --- !u!114 &4672876615373191074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,7 +276,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 80aec6801beb2b54a89fae4a0dd13826, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: b02b130e9c4741843983271b8011c537, type: 2}
+      objectReference: {fileID: 2100000, guid: 530af0a06114c714d8518ec6bd748ecb, type: 2}
     - target: {fileID: 919132149155446097, guid: 80aec6801beb2b54a89fae4a0dd13826, type: 3}
       propertyPath: m_Name
       value: cargo
