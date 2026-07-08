@@ -10,6 +10,8 @@ public class Box : MonoBehaviour
     public bool seal = false;
     private float danger_percentage = 0.5f; //%5 ihtimal
 
+    public bool CanBeScanned = false;
+
 
     void Start()
     {

@@ -43,18 +43,20 @@ public class ColorScanner : MonoBehaviour
 
     public void ScanForBox()
     {
-        if (_isProcessing || _targetSlotMaterial == null)
+        if (_isProcessing || _targetSlotMaterial == null || !holding_scanner)
             return;
+
         Collider[] hits = Physics.OverlapSphere(_rayOrigin.position, _scanRadius);
 
         foreach (Collider hit in hits)
         {
             if (hit.TryGetComponent<Box>(out Box boxData))
             {
-               
+                if (!boxData.CanBeScanned)
+                    continue;
+
                 ApplyEmissionEffect(boxData.color);
                 return;
-                
             }
         }
     }

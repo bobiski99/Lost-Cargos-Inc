@@ -14,9 +14,8 @@ public class BoxTrigger : MonoBehaviour
     {
         if (other.TryGetComponent<Hold>(out Hold hold) && other.TryGetComponent<Box>(out Box bx))
         {
-            if (bx.Danger) CargoCoreManager.instance.Danger = true;
             Destroy(other.GetComponent<BoxSlide>());
-
+            bx.CanBeScanned = true;
             other.transform.parent = boxPos;
 
             hold.enabled = true;

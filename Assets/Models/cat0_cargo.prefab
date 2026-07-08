@@ -137,6 +137,8 @@ MonoBehaviour:
   deliver: {fileID: 0}
   ItsSellable: 1
   StarterPoint: {x: 0, y: 0, z: 0}
+  scanner_holding: 0
+  scannerScreen: {fileID: 0}
 --- !u!114 &4672876615373191074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,7 +207,7 @@ MonoBehaviour:
   color: 0
   number: 0
   Danger: 0
-  cat: 0
+  cat: 1
   hat: 0
   seal: 0
 --- !u!1001 &5380916854762536629

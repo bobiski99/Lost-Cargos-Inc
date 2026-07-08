@@ -13,7 +13,7 @@ public class SpawnManager : MonoBehaviour
     public float baseSpawnInterval = 2.0f; // Oyun başındaki başlangıç süresi (Örn: 10sn)
     public float minSpawnInterval = 4.0f;  // İnilebilecek en düşük süre (Limit)
     public float reductionAmount = 0.3f;   // Her adımda ne kadar azalacak
-    public float reductionStepTime = 10f;  // Kaç saniyede bir zorlaşacak
+    public float reductionStepTime = 5f;  // Kaç saniyede bir zorlaşacak
 
     private float _timer = 0f;
     private float _nextSpawnTime = 0f;
