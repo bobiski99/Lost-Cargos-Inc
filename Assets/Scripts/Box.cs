@@ -8,7 +8,7 @@ public class Box : MonoBehaviour
     public bool cat = false;
     public bool hat = false;
     public bool seal = false;
-    private float danger_percentage = 0.05f; //%5 ihtimal
+    private float danger_percentage = 0.5f; //%5 ihtimal
 
 
     void Start()

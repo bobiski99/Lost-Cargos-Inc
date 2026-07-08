@@ -2205,6 +2205,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401657665}
   m_CullTransparentMesh: 1
+--- !u!1 &414131589 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6141a1dff0e122143adb15479c3588a6, type: 3}
+  m_PrefabInstance: {fileID: 1820174061}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &416778746
 GameObject:
   m_ObjectHideFlags: 0
@@ -3813,7 +3818,7 @@ GameObject:
   - component: {fileID: 904963723}
   m_Layer: 0
   m_Name: x-ray
-  m_TagString: Pivot
+  m_TagString: xray
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3837,8 +3842,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.1514696, y: 2.266724, z: 1}
-  m_Center: {x: 0.026825368, y: 0.010837793, z: 0}
+  m_Size: {x: 2.4828224, y: 1.8089428, z: 1}
+  m_Center: {x: 0.0185318, y: -0.21805286, z: 0}
 --- !u!23 &904963724
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5334,6 +5339,7 @@ MonoBehaviour:
   ItsSellable: 0
   StarterPoint: {x: 0, y: 0, z: 0}
   scanner_holding: 0
+  scannerScreen: {fileID: 0}
 --- !u!114 &1153988277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5369,6 +5375,34 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6141a1dff0e122143adb15479c3588a6, type: 3}
   m_PrefabInstance: {fileID: 1820174061}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &1225591717 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 6141a1dff0e122143adb15479c3588a6, type: 3}
+  m_PrefabInstance: {fileID: 1820174061}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1225591719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414131589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af467f05b5a90964394189753d54bd2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  targetRenderer: {fileID: 1225591717}
+  materialIndex: 1
+  readyTexture: {fileID: 2800000, guid: c40551755917e92478ff98c8718ec725, type: 3}
+  scanningTextures:
+  - {fileID: 2800000, guid: 1f90456e16f13f7458176086441a5ba4, type: 3}
+  cleanTexture: {fileID: 2800000, guid: 5a7ac52c914f1d944b3d71b91513d53c, type: 3}
+  dangerTexture: {fileID: 2800000, guid: e61d7b37300a9b14a88391fb2f982bc6, type: 3}
+  normalEmission: {r: 0.7490196, g: 0.12941177, b: 0, a: 1}
+  dangerEmission: {r: 1, g: 0, b: 0, a: 1}
+  emissionIntensity: 5.5
+  xrayGrid: {fileID: 191125417}
 --- !u!1 &1225926883
 GameObject:
   m_ObjectHideFlags: 0
@@ -7646,7 +7680,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6141a1dff0e122143adb15479c3588a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1225591719}
   m_SourcePrefab: {fileID: 100100000, guid: 6141a1dff0e122143adb15479c3588a6, type: 3}
 --- !u!1 &1829640669
 GameObject:
@@ -8333,6 +8370,7 @@ MonoBehaviour:
   ItsSellable: 0
   StarterPoint: {x: 0, y: 0, z: 0}
   scanner_holding: 0
+  scannerScreen: {fileID: 0}
 --- !u!65 &2081140349
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8585,8 +8623,8 @@ Transform:
   m_GameObject: {fileID: 2119106464}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.509, y: 0.4, z: 4.74}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 8.15, y: 0.4, z: 4.74}
+  m_LocalScale: {x: 0.71645, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

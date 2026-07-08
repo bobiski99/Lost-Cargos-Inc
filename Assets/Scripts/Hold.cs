@@ -20,6 +20,8 @@ public class Hold : MonoBehaviour
     private Camera cam;
     Vector3 startScale;
     Vector3 hoverScale;
+    Vector3 xray_hoverscale;
+    Vector3 cat_hoverscale;
     GameObject pivot;
     private Rigidbody rb;
     bool dont;
@@ -32,12 +34,17 @@ public class Hold : MonoBehaviour
     private float catStartX;
     private bool catMoved = false;
 
+    [SerializeField] private ScannerScreen scannerScreen;
+
+    private bool scanning = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 
         dangerDoorButton = FindAnyObjectByType<DangerDoorButton>();
         deliver = FindAnyObjectByType<DeliverButton>();
+        scannerScreen = FindAnyObjectByType<ScannerScreen>();
 
         catbox cat = FindAnyObjectByType<catbox>();
 
@@ -52,6 +59,9 @@ public class Hold : MonoBehaviour
         cam = Camera.main;
         startScale = transform.localScale;
         hoverScale = startScale * 0.6f;
+        cat_hoverscale = startScale * 0.8f;
+        xray_hoverscale = startScale * 0.8f;
+        
     }
 
     private void OnMouseOver()
@@ -86,9 +96,12 @@ public class Hold : MonoBehaviour
     
     void OnMouseUp()
     {
-        if (CompareTag("scanner"))
+        holded = false;
+        scanner_holding = false;
+        if (scanning)
         {
-            scanner_holding = false;
+            scanning = false;
+            scannerScreen.StopScan();
         }
         transform.DORotate(StarterRot, 0.5f).SetEase(Ease.OutElastic);
         Box bx = GetComponent<Box>();
@@ -174,6 +187,11 @@ public class Hold : MonoBehaviour
 
     void Update()
     {
+        if (holded && !Input.GetMouseButton(0))
+        {
+            OnMouseUp();
+            return;
+        }
         if (dont) return;
         if (holded)
         {
@@ -237,6 +255,30 @@ public class Hold : MonoBehaviour
 
                         if (col.gameObject == gameObject) continue;
 
+                        if (col.CompareTag("xray") && !isCat)
+                        {
+                            if (!scanning)
+                            {
+                                scanning = true;
+                                scannerScreen.StartScan(GetComponent<Box>());
+                            }
+
+                            Debug.Log("xray taraması");
+
+                            pvt = col;
+                            target = col.transform.position;
+
+                            if ((transform.position - target).magnitude > 0.1f)
+                                transform.DORotate(StarterRot, 0.2f).SetEase(Ease.OutBack);
+
+                            break;
+                        }
+                    }
+                    foreach (Collider col in hitColliders)
+                    {
+
+                        if (col.gameObject == gameObject) continue;
+
                         if (col.CompareTag("cat_pivot") && isCat)
                         {
                             pvt = col;
@@ -265,16 +307,40 @@ public class Hold : MonoBehaviour
                 }
                 
                 GameObject yeniHedef = (pvt != null) ? pvt.gameObject : null;
-                
+
 
                 if (yeniHedef != pivot)
                 {
-                    bool dontHoverScale = yeniHedef != null &&  (yeniHedef.CompareTag("dangerpivot") || yeniHedef.CompareTag("cat_pivot"));
-
-                    if (!dontHoverScale)
+                    // Xray'den çıktıysak taramayı durdur
+                    if (pivot != null && pivot.CompareTag("xray") && (yeniHedef == null || !yeniHedef.CompareTag("xray")))
                     {
-                        transform.DOScale(hoverScale, 0.2f).SetEase(Ease.OutBack);
+                        scanning = false;
+                        scannerScreen.StopScan();
                     }
+                    if (scanning && (yeniHedef == null || !yeniHedef.CompareTag("xray")))
+                     {
+                         scanning = false;
+                     }
+                    if (yeniHedef != null)
+                    {
+                        if (yeniHedef.CompareTag("cat_pivot"))
+                        {
+                            transform.DOScale(cat_hoverscale, 0.2f).SetEase(Ease.OutBack);
+                        }
+                        else if (yeniHedef.CompareTag("xray"))
+                        {
+                            transform.DOScale(xray_hoverscale, 0.2f).SetEase(Ease.OutBack);
+                        }
+                        else if (!yeniHedef.CompareTag("dangerpivot"))
+                        {
+                            transform.DOScale(hoverScale, 0.2f).SetEase(Ease.OutBack);
+                        }
+                    }
+                    else
+                    {
+                        transform.DOScale(startScale, 0.2f).SetEase(Ease.OutBack);
+                    }
+
                     if (pivot != null)
                     {
                         if (pivot.TryGetComponent<DoorOpener>(out DoorOpener eskiKapi))
@@ -290,14 +356,8 @@ public class Hold : MonoBehaviour
                             yeniKapi.OpenDoor();
                         }
                     }
-                    else
-                    {
-                        transform.DOScale(startScale, 0.2f).SetEase(Ease.OutBack);
-                    }
-
 
                     pivot = yeniHedef;
-
                 }
                 transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * moveSpeed);
 
