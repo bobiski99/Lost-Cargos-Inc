@@ -3,7 +3,12 @@ guid: d933a0a701d6c3d41b221bf3d5eb4e5b
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: coin_tex
+    second: {fileID: 2100000, guid: 2fb3ae5574cddda44824de764ef1474a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
