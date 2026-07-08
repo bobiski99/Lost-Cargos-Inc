@@ -37,6 +37,7 @@ public class DeliverButton : MonoBehaviour
         if (_targetCollider != null)
             _targetCollider.enabled = false;
         CargoCoreManager.instance.GivePoint(100);
+        CargoCoreManager.instance.Heal();
         lightController.TurnOnForSeconds(3f);
         transform.DOMove(_targetPosition1, _animationDuration).SetEase(Ease.OutExpo);
         transform.DOMove(_targetbase, _animationDuration).SetDelay(2f);

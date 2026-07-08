@@ -31,7 +31,7 @@ public class DoorOpener : MonoBehaviour
     public void TryBox(int _color, int _number, bool _danger = false)
     {
 
-        if (_color != color || _number != number || _danger==true)
+        if (_color != color || _number != number)
         {
             CargoCoreManager.instance.takeDamage(); return; 
         }

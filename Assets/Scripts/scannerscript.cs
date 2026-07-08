@@ -69,16 +69,15 @@ public class ScannerScreen : MonoBehaviour
 
         gridSeq.Append(xrayGrid.DOLocalMoveY(-0.92f, 0.5f).SetEase(Ease.Linear));
         float timer = 0;
-
         while (timer < 1f)
         {
             foreach (Texture tex in scanningTextures)
             {
                 SetTexture(tex, normalEmission, 2f);
 
-                yield return new WaitForSeconds(0.15f);
+                yield return new WaitForSeconds(0.25f);
 
-                timer += 0.15f;
+                timer += 0.25f;
 
                 if (timer >= 1f)
                     break;

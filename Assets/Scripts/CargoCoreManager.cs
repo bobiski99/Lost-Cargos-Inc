@@ -58,17 +58,38 @@ public class CargoCoreManager : MonoBehaviour
         timer += Time.deltaTime;
     }
 
-    public void takeDamage()
+    public void takeDamage(int damage = 1)
     {
         if (pause) return;
         if (healt == 0) return;
-        healt--;
-        PlayFlickerAndDestroy(healtIcons[healt]);
+
+        for (int i = 0; i < damage; i++)
+        {
+            if (healt == 0)
+                break;
+
+            healt--;
+            PlayFlickerAndDestroy(healtIcons[healt]);
+        }
 
         if (healt == 0)
         {
             pause = true;
-            Debug.Log("GAME OVER - Score: " + Score);// editor'da test için
+            Debug.Log("GAME OVER - Score: " + Score);
+        }
+    }
+    public void Heal(int amount = 1)
+    {
+        if (pause) return;
+
+        for (int i = 0; i < amount; i++)
+        {
+            if (healt >= healtIcons.Length)
+                break;
+
+            healtIcons[healt].gameObject.SetActive(true);
+
+            healt++;
         }
     }
 
@@ -93,12 +114,15 @@ public class CargoCoreManager : MonoBehaviour
         }, Score, 1.5f).SetEase(Ease.OutQuad);
     }
 
-    public void PlayFlickerAndDestroy(RawImage _img)
+    public void PlayFlickerAndDestroy(RawImage img)
     {
         if (pause) return;
-        _img.DOFade(0, 0.2f).SetLoops(6, LoopType.Yoyo).OnComplete(() =>
-        {
-            Destroy(_img.gameObject);
-        });
+
+        img.DOFade(0, 0.2f)
+            .SetLoops(6, LoopType.Yoyo)
+            .OnComplete(() =>
+            {
+                img.gameObject.SetActive(false);
+            });
     }
 }

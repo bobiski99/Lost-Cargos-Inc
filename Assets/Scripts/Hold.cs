@@ -155,14 +155,19 @@ public class Hold : MonoBehaviour
             {
                 dont = true;
                 transform.DOScale(new Vector3(-0.2f, -0.2f, -0.2f), 0.2f).SetEase(Ease.OutBack).SetRelative(true);
-                transform.DOMoveY(-10, .5f).SetRelative(true).SetEase(Ease.InBack).OnComplete(() =>
-                {
-                    eskiKapi.TryBox(bx.color, bx.number, bx.Danger);
-                    eskiKapi.OpenDoor();
 
-                    transform.DOKill();
-                    Destroy(gameObject);
-                });
+                transform.DOMoveY(-10, .5f).SetRelative(true).SetEase(Ease.InBack).OnComplete(() =>
+                    {
+                        eskiKapi.TryBox(bx.color, bx.number, bx.Danger);
+
+                        if (bx.Danger)
+                            CargoCoreManager.instance.takeDamage(1);
+
+                        eskiKapi.OpenDoor();
+
+                        transform.DOKill();
+                        Destroy(gameObject);
+                    });
             }
 
         }
