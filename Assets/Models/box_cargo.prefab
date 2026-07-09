@@ -132,7 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Hold
   YHeight: 0.3
   moveSpeed: 15
-  holdRot: {x: -10, y: 0, z: 0}
+  holdRot: {x: 0, y: 0, z: 0}
   dangerDoorButton: {fileID: 0}
   deliver: {fileID: 0}
   ItsSellable: 1
@@ -210,6 +210,7 @@ MonoBehaviour:
   cat: 0
   hat: 0
   seal: 0
+  CanBeScanned: 0
 --- !u!1001 &4806935212130209312
 PrefabInstance:
   m_ObjectHideFlags: 0

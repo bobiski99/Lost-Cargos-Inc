@@ -53,10 +53,7 @@ public class ScannerScreen : MonoBehaviour
 
         xrayGrid.DOKill();
 
-        xrayGrid.localPosition = new Vector3(
-            xrayGrid.localPosition.x,
-            -0.92f,
-            xrayGrid.localPosition.z);
+        xrayGrid.localPosition = new Vector3(xrayGrid.localPosition.x, -0.92f,xrayGrid.localPosition.z);
     }
 
     IEnumerator ScanRoutine(Box box)

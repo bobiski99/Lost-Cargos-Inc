@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 2294358079980735743}
   - component: {fileID: 4954410453261489331}
   - component: {fileID: 7261875597641551474}
-  - component: {fileID: 4672876615373191074}
   - component: {fileID: 5547885843034794036}
   - component: {fileID: 5437913991294162525}
   - component: {fileID: 437884804103152982}
+  - component: {fileID: 513332325887524162}
   m_Layer: 0
   m_Name: cat0_cargo
   m_TagString: catto
@@ -132,27 +132,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Hold
   YHeight: 0.3
   moveSpeed: 15
-  holdRot: {x: -10, y: 0, z: 0}
+  holdRot: {x: 0, y: 0, z: 0}
   dangerDoorButton: {fileID: 0}
   deliver: {fileID: 0}
   ItsSellable: 1
   StarterPoint: {x: 0, y: 0, z: 0}
   scanner_holding: 0
   scannerScreen: {fileID: 0}
---- !u!114 &4672876615373191074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6634354653874845232}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a8d6c8b01a8d4b4e8d331b33e02f3f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OutlineController
-  outlineMaterial: {fileID: 2100000, guid: d8a5762839c482343a4af76f7ca5b3bc, type: 2}
-  _isOutlineActive: 0
 --- !u!54 &5547885843034794036
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -210,6 +196,21 @@ MonoBehaviour:
   cat: 1
   hat: 0
   seal: 0
+  CanBeScanned: 0
+--- !u!114 &513332325887524162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6634354653874845232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a8d6c8b01a8d4b4e8d331b33e02f3f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlineController
+  outlineMaterial: {fileID: 2100000, guid: b737ec525bce4b345937979a6ecf8c7e, type: 2}
+  _isOutlineActive: 0
 --- !u!1001 &5380916854762536629
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -277,8 +278,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9134be52eb689a341b31f62113e2e853, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4696735194964233547}
   m_SourcePrefab: {fileID: 100100000, guid: 9134be52eb689a341b31f62113e2e853, type: 3}
+--- !u!1 &5074908683876778980 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9134be52eb689a341b31f62113e2e853, type: 3}
+  m_PrefabInstance: {fileID: 5380916854762536629}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4696735194964233547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5074908683876778980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0fb60b36250954b81da58eb25c1d9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Rotate
+  rotationAxis: {x: 0, y: 50, z: 0}
 --- !u!4 &5559238695731927390 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9134be52eb689a341b31f62113e2e853, type: 3}

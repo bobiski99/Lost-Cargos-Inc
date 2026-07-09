@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 310c4ce71cb1f544e8bd196fefcde83d
+guid: 8b6c245b9efb924469628ecd1a119278
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: schrodinger_box_mat
-    second: {fileID: 2100000, guid: 37f86f13480e6ca43862a1a3f4a8e9fb, type: 2}
+      name: Material.001
+    second: {fileID: 2100000, guid: 996dc62f9bdb45a4cbc1594aa9502673, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -51,7 +51,7 @@ ModelImporter:
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
@@ -77,7 +77,7 @@ ModelImporter:
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 1
+    normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0

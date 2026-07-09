@@ -26,16 +26,11 @@ public class Hold : MonoBehaviour
     private Rigidbody rb;
     bool dont;
     private bool catBoxAnimating = false;
-
     public bool scanner_holding = false;
-
-
     private Transform catObject;
     private float catStartX;
     private bool catMoved = false;
-
     [SerializeField] private ScannerScreen scannerScreen;
-
     private bool scanning = false;
 
     void Start()
@@ -118,7 +113,7 @@ public class Hold : MonoBehaviour
                 transform.DOMoveY(-10, 0.5f).SetRelative(true).SetEase(Ease.InBack);
                 transform.DOKill();
                 Destroy(gameObject);
-
+                
                 CargoCoreManager.instance.GivePoint(50);
 
 
@@ -229,17 +224,22 @@ public class Hold : MonoBehaviour
                 Collider pvt = null;
                 Box bx = GetComponent<Box>();
                 bool isCat = bx != null && bx.cat;
-                if (isCat && catObject != null && !catMoved && !catBoxAnimating)
-                {
-                    catMoved = true;
-
-                    catObject.DOKill();
-
-                    catObject.DOMoveX(catStartX - 6f, 0.3f).SetEase(Ease.OutBack);
-
-                }
+                
                 if (ItsSellable)
                 {
+                    if (isCat && catObject != null && !catMoved && !catBoxAnimating)
+                    {
+                        catBoxAnimating = true;
+
+                        catMoved = true;
+
+                        catObject.DOKill();
+
+                        catObject.DOMoveX(catStartX - 6f, 0.3f).SetEase(Ease.OutBack);
+
+
+
+                    }
                     foreach (Collider col in hitColliders)
                     {
 

@@ -22,6 +22,7 @@ public class SpawnManager : MonoBehaviour
     [Header("Cat Prefabs")]
     public GameObject cat0Cargo;
     public GameObject cat1Cargo;
+    public GameObject cat2Cargo;
 
     [Range(0f, 1f)]
     public float catChance = 0.07f; // %7
@@ -69,7 +70,8 @@ public class SpawnManager : MonoBehaviour
         // %7 ihtimal
         if (Random.value < catChance)
         {
-            selectedPrefab = Random.value < 0.5f ? cat0Cargo : cat1Cargo;
+            GameObject[] catVariants = { cat0Cargo, cat1Cargo, cat2Cargo };
+            selectedPrefab = catVariants[Random.Range(0, catVariants.Length)];
         }
         else
         {
