@@ -35,7 +35,6 @@ public class MessageManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        messagePanel.SetActive(false);
     }
 
     public void ShowMessage(string message)

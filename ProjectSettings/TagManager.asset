@@ -13,6 +13,9 @@ TagManager:
   - cat_pivot
   - scanner
   - xray
+  - hatto
+  - HatTarget
+  - coin
   layers:
   - Default
   - TransparentFX

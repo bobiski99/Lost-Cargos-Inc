@@ -12,8 +12,9 @@ public class Hold : MonoBehaviour
     public Vector3 holdRot;
     [SerializeField] private DangerDoorButton dangerDoorButton;
     [SerializeField] private DeliverButton deliver;
+    [SerializeField] private fes hat_wear;
     public bool ItsSellable = true;
-
+    private Transform hatTarget;
     public Vector3 StarterPoint;
     Vector3 StarterRot;
     private bool holded = false;
@@ -32,15 +33,17 @@ public class Hold : MonoBehaviour
     private bool catMoved = false;
     [SerializeField] private ScannerScreen scannerScreen;
     private bool scanning = false;
+    private bool hatMoving = false;
 
     void Start()
     {
+
         rb = GetComponent<Rigidbody>();
 
         dangerDoorButton = FindAnyObjectByType<DangerDoorButton>();
         deliver = FindAnyObjectByType<DeliverButton>();
         scannerScreen = FindAnyObjectByType<ScannerScreen>();
-
+        hat_wear = FindAnyObjectByType<fes>();
         catbox cat = FindAnyObjectByType<catbox>();
 
         if (cat != null)
@@ -48,7 +51,7 @@ public class Hold : MonoBehaviour
             catObject = cat.transform;
             catStartX = catObject.position.x;
         }
-
+        hatTarget = GameObject.FindGameObjectWithTag("HatTarget").transform;
         if (StarterPoint == Vector3.zero) StarterPoint = transform.position;
         StarterRot = transform.eulerAngles;
         cam = Camera.main;
@@ -73,34 +76,95 @@ public class Hold : MonoBehaviour
 
     void OnMouseDown()
     {
+       
         if (CompareTag("scanner"))
         {
-            
             scanner_holding = true;
-        }
-            
-        holded = true;
-        if (Vector3.Distance(transform.position, StarterPoint) > 0.02f)
+            holded = true;
             return;
-        transform.DOKill();
-        transform.GetComponent<OutlineController>().IsOutlineActive = false;
-        transform.DORotate(holdRot, 0.6f).SetEase(Ease.OutBack);
-        transform.DOShakeScale(0.3f, .3f).SetEase(Ease.OutBack);
+        }
+        if (CompareTag("coin"))
+        {
+            holded = true;
+            return;
+        }
+        Box bx = GetComponent<Box>();
+        bool hasBox = bx != null;
+        if (bx.isOnTable == false)
+        {
+            Debug.Log("noldu lan hattayken tıklayamıyon mu artık hıyar :D");
+            return;
+        }
+        if (bx.isOnTable == true)
+        {
+            if (CompareTag("hatto"))
+            {
+                hatMoving = true;
+
+                transform.DOKill();
+
+                transform.DORotate(hatTarget.eulerAngles, 1f);
+                transform.DOMove(hatTarget.position, 1f).SetEase(Ease.OutBack).OnComplete(() =>
+                {
+                    CargoCoreManager.instance.GivePoint(10);
+                    hat_wear.transform.DOLocalMoveY(0.00542f, 0.2f).SetEase(Ease.OutBack);
+                    transform.DOKill();
+                    // 3 saniye sonra geri çıksın
+                    DOVirtual.DelayedCall(3f, () =>
+                    {
+                        hat_wear.transform.DOLocalMoveY(0.0082f, 1f).SetEase(Ease.InOutQuart); 
+                        transform.DOKill();
+                        Destroy(gameObject);
+                        transform.DOKill(true);
+
+                    });
+                    
+                    
+                });
+
+                return;
+            }
+            
+
+            holded = true;
+            if (Vector3.Distance(transform.position, StarterPoint) > 0.02f)
+                return;
+            transform.DOKill();
+            transform.GetComponent<OutlineController>().IsOutlineActive = false;
+            transform.DORotate(holdRot, 0.6f).SetEase(Ease.OutBack);
+            transform.DOShakeScale(0.3f, .3f).SetEase(Ease.OutBack);
+        }
+        
 
     }
-    
+    public void PlayHatAnimation()
+    {
+        transform.DOLocalMoveY(0.00542f, 0.2f);
+
+        DOVirtual.DelayedCall(3f, () =>
+        {
+            transform.DOLocalMoveY(0.0082f, 0.2f);
+        });
+    }
     void OnMouseUp()
     {
+
         holded = false;
         scanner_holding = false;
+        Box bx = GetComponent<Box>();
         if (scanning)
         {
             scanning = false;
             scannerScreen.StopScan();
         }
+        if (bx != null && bx.hat)
+        {
+            return;
+        }
         transform.DORotate(StarterRot, 0.5f).SetEase(Ease.OutElastic);
-        Box bx = GetComponent<Box>();
+        
         bool isCat = bx != null && bx.cat;
+        
         if (pivot != null)
         {
             if (isCat && pivot.CompareTag("cat_pivot"))
@@ -187,6 +251,11 @@ public class Hold : MonoBehaviour
 
     void Update()
     {
+        if (hatMoving)
+        {
+            return;
+        }
+            
         if (holded && !Input.GetMouseButton(0))
         {
             OnMouseUp();
@@ -365,7 +434,6 @@ public class Hold : MonoBehaviour
                     pivot = yeniHedef;
                 }
                 transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * moveSpeed);
-
                 if (Mathf.Abs(transform.position.x - target.x) > 0.2f && pvt == null) transform.DORotate(new Vector3(0, (transform.position.x - target.x) * 12, 0) + holdRot, 0.2f).SetEase(Ease.OutBack);
             }
         }

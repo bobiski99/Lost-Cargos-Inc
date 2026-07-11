@@ -9,7 +9,7 @@ public class Box : MonoBehaviour
     public bool hat = false;
     public bool seal = false;
     private float danger_percentage = 0.5f; //%5 ihtimal
-
+    public bool isOnTable = false;
     public bool CanBeScanned = false;
 
 

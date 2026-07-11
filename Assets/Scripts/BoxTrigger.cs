@@ -4,6 +4,7 @@ public class BoxTrigger : MonoBehaviour
 {
     [SerializeField] private Transform boxPos;
     [SerializeField] private BoxCollider col;
+    public bool isOnTable;
 
     private void Start()
     {
@@ -17,7 +18,8 @@ public class BoxTrigger : MonoBehaviour
             Destroy(other.GetComponent<BoxSlide>());
             bx.CanBeScanned = true;
             other.transform.parent = boxPos;
-
+            bx.isOnTable = true;
+            Debug.Log("isontable=true");
             hold.enabled = true;
             hold.StarterPoint = boxPos.position;
         }
