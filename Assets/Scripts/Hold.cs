@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SocialPlatforms.Impl;
 using static UnityEngine.GraphicsBuffer;
 
@@ -13,6 +14,7 @@ public class Hold : MonoBehaviour
     [SerializeField] private DangerDoorButton dangerDoorButton;
     [SerializeField] private DeliverButton deliver;
     [SerializeField] private fes hat_wear;
+    [SerializeField] private discoball_sc disco;
     public bool ItsSellable = true;
     private Transform hatTarget;
     public Vector3 StarterPoint;
@@ -33,7 +35,7 @@ public class Hold : MonoBehaviour
     private bool catMoved = false;
     [SerializeField] private ScannerScreen scannerScreen;
     private bool scanning = false;
-    private bool hatMoving = false;
+    private bool clickObject_Moving = false;
 
     void Start()
     {
@@ -45,6 +47,7 @@ public class Hold : MonoBehaviour
         scannerScreen = FindAnyObjectByType<ScannerScreen>();
         hat_wear = FindAnyObjectByType<fes>();
         catbox cat = FindAnyObjectByType<catbox>();
+        disco = FindAnyObjectByType<discoball_sc>();
 
         if (cat != null)
         {
@@ -90,6 +93,7 @@ public class Hold : MonoBehaviour
         }
         Box bx = GetComponent<Box>();
         bool hasBox = bx != null;
+        
         if (bx.isOnTable == false)
         {
             Debug.Log("noldu lan hattayken tıklayamıyon mu artık hıyar :D");
@@ -99,7 +103,7 @@ public class Hold : MonoBehaviour
         {
             if (CompareTag("hatto"))
             {
-                hatMoving = true;
+                clickObject_Moving = true;
 
                 transform.DOKill();
 
@@ -124,6 +128,19 @@ public class Hold : MonoBehaviour
 
                 return;
             }
+            if (CompareTag("discoball"))
+            {
+                clickObject_Moving = true;
+                transform.DOMoveY(10.93f, 0.5f).SetEase(Ease.OutBack);
+                CargoCoreManager.instance.GivePoint(15);
+                disco.discotime();
+                DOVirtual.DelayedCall(2f, () =>
+                {
+                    Destroy(gameObject);
+                });
+                return;
+            }
+
             
 
             holded = true;
@@ -251,7 +268,7 @@ public class Hold : MonoBehaviour
 
     void Update()
     {
-        if (hatMoving)
+        if (clickObject_Moving)
         {
             return;
         }

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 437884804103152982}
   - component: {fileID: 6482914263616730459}
   m_Layer: 0
-  m_Name: box_cargo 5
+  m_Name: hat_cargo0
   m_TagString: hatto
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

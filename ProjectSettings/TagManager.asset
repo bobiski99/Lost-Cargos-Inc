@@ -16,6 +16,8 @@ TagManager:
   - hatto
   - HatTarget
   - coin
+  - discoball
+  - box
   layers:
   - Default
   - TransparentFX

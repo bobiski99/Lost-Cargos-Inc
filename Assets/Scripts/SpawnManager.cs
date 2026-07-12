@@ -19,13 +19,16 @@ public class SpawnManager : MonoBehaviour
     private float _nextSpawnTime = 0f;
 
 
-    [Header("Cat Prefabs")]
+    [Header("Special Box Prefabs")]
     public GameObject cat0Cargo;
     public GameObject cat1Cargo;
     public GameObject cat2Cargo;
+    public GameObject hatPrefab;
 
-    [Range(0f, 1f)]
-    public float catChance = 0.07f; // %7
+    public GameObject hatPrefab0;
+    public GameObject discoPrefab;
+    public GameObject sealPrefab;
+
 
     void Update()
     {
@@ -67,16 +70,41 @@ public class SpawnManager : MonoBehaviour
 
         GameObject selectedPrefab;
 
-        // %7 ihtimal
-        if (Random.value < catChance)
+        float chance = Random.Range(0f, 100f);
+
+        if (chance < 3f)
         {
+            // %3 Kedi
             GameObject[] catVariants = { cat0Cargo, cat1Cargo, cat2Cargo };
             selectedPrefab = catVariants[Random.Range(0, catVariants.Length)];
         }
+        else if (chance < 6f)
+        {
+            // %3 Hat
+            GameObject[] hatvariants = { hatPrefab, hatPrefab0 };
+            selectedPrefab = hatvariants[Random.Range(0, hatvariants.Length)]; 
+        }
+        else if (chance < 100f)
+        {
+            // %3 Disco
+            selectedPrefab = discoPrefab;
+        }
+        else if (chance < 10f)
+        {
+            // %1 Seal
+            selectedPrefab = sealPrefab;
+        }
         else
         {
+            // %90 Normal box
             selectedPrefab = variants[Random.Range(0, variants.Length)];
         }
+        //Chances
+        //0-3       → Cat %3
+        //3-6       → Hat %3
+        //6-9       → Disco %3
+        //9-10      → Seal %1
+        //10-100    → Normal Box
 
         Instantiate(selectedPrefab, spawnPos, Quaternion.identity);
     }

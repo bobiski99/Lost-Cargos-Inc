@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 437884804103152982}
   m_Layer: 0
   m_Name: box_cargo
-  m_TagString: Untagged
+  m_TagString: box
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,6 +135,7 @@ MonoBehaviour:
   holdRot: {x: 0, y: 0, z: 0}
   dangerDoorButton: {fileID: 0}
   deliver: {fileID: 0}
+  hat_wear: {fileID: 0}
   ItsSellable: 1
   StarterPoint: {x: 0, y: 0, z: 0}
   scanner_holding: 0
@@ -210,6 +211,8 @@ MonoBehaviour:
   cat: 0
   hat: 0
   seal: 0
+  discoball: 0
+  isOnTable: 0
   CanBeScanned: 0
 --- !u!1001 &4806935212130209312
 PrefabInstance:

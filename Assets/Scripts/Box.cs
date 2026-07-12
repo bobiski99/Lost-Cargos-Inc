@@ -8,7 +8,7 @@ public class Box : MonoBehaviour
     public bool cat = false;
     public bool hat = false;
     public bool seal = false;
-    private float danger_percentage = 0.5f; //%5 ihtimal
+    public bool discoball = false;
     public bool isOnTable = false;
     public bool CanBeScanned = false;
 
@@ -16,12 +16,22 @@ public class Box : MonoBehaviour
     void Start()
     {
 
-        Danger = UnityEngine.Random.value <= danger_percentage;
         color = UnityEngine.Random.Range(1, 5);
         number = UnityEngine.Random.Range(1, 5);
+        if (CompareTag("box"))
+        {
+            Danger = Random.value <= 1f;
+        }
         if (tag == "catto")
         {
             cat= true;
+            color = 1;
+            number = 0;
+        }
+
+        if (tag == "discoball")
+        {
+            discoball = true;
         }
 
         if (tag == "hatto")
