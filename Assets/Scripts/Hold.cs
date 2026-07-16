@@ -104,22 +104,23 @@ public class Hold : MonoBehaviour
             if (CompareTag("hatto"))
             {
                 clickObject_Moving = true;
-
+                bx.isOnTable = false;
                 transform.DOKill();
 
                 transform.DORotate(hatTarget.eulerAngles, 1f);
                 transform.DOMove(hatTarget.position, 1f).SetEase(Ease.OutBack).OnComplete(() =>
                 {
+                    
                     CargoCoreManager.instance.GivePoint(10);
                     hat_wear.transform.DOLocalMoveY(0.00542f, 0.2f).SetEase(Ease.OutBack);
                     transform.DOKill();
-                    // 3 saniye sonra geri çıksın
+                    
                     DOVirtual.DelayedCall(3f, () =>
                     {
                         hat_wear.transform.DOLocalMoveY(0.0082f, 1f).SetEase(Ease.InOutQuart); 
                         transform.DOKill();
-                        Destroy(gameObject);
                         transform.DOKill(true);
+                        Destroy(gameObject);
 
                     });
                     
@@ -456,6 +457,11 @@ public class Hold : MonoBehaviour
         }
         else
         {
+
+
+
+
+
             transform.position = Vector3.Lerp(transform.position, StarterPoint, Time.deltaTime * moveSpeed);
         }
 

@@ -20,7 +20,7 @@ public class Box : MonoBehaviour
         number = UnityEngine.Random.Range(1, 5);
         if (CompareTag("box"))
         {
-            Danger = Random.value <= 1f;
+            Danger = Random.value <= 0.05f;
         }
         if (tag == "catto")
         {
