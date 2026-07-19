@@ -1,90 +1,94 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer))]
 public class OutlineController : MonoBehaviour
 {
-    [Header("Gorsel Ayarlar")]
+    [Header("Görsel Ayarlar")]
     [SerializeField] private Material outlineMaterial;
 
-    private Renderer _mainRenderer;
-    private GameObject _outlineObj;
-    private Renderer _outlineRenderer;
+    private readonly List<GameObject> outlineObjects = new();
 
     [Header("Kontrol")]
-    [SerializeField] private bool _isOutlineActive = false;
+    [SerializeField] private bool _isOutlineActive;
 
     public bool IsOutlineActive
     {
         get => _isOutlineActive;
         set
         {
-            if (_isOutlineActive != value)
-            {
-                _isOutlineActive = value;
-                UpdateOutlineState();
-            }
+            if (_isOutlineActive == value) return;
+
+            _isOutlineActive = value;
+            UpdateOutlineState();
         }
     }
 
     void Awake()
     {
-        _mainRenderer = GetComponent<Renderer>();
-        CreateOutlineObject();
+        CreateOutlineObjects();
     }
 
-    private void CreateOutlineObject()
+    void CreateOutlineObjects()
     {
-        // Eski bir outline varsa temizle
-        if (transform.Find("OutlineObject")) return;
+        outlineObjects.Clear();
 
-        _outlineObj = new GameObject("OutlineObject");
-        _outlineObj.transform.SetParent(transform);
-        _outlineObj.transform.localPosition = Vector3.zero;
-        _outlineObj.transform.localRotation = Quaternion.identity;
-        _outlineObj.transform.localScale = Vector3.one;
+        MeshRenderer[] renderers = GetComponentsInChildren<MeshRenderer>(true);
 
-        // Mesh yapýsýný kopyala (MeshFilter veya SkinnedMeshRenderer uyumu)
-        if (_mainRenderer is MeshRenderer)
+        foreach (MeshRenderer rend in renderers)
         {
-            _outlineObj.AddComponent<MeshFilter>().sharedMesh = GetComponent<MeshFilter>().sharedMesh;
-            _outlineRenderer = _outlineObj.AddComponent<MeshRenderer>();
-        }
-        else if (_mainRenderer is SkinnedMeshRenderer smr)
-        {
-            var outlineSmr = _outlineObj.AddComponent<SkinnedMeshRenderer>();
-            outlineSmr.sharedMesh = smr.sharedMesh;
-            outlineSmr.rootBone = smr.rootBone;
-            outlineSmr.bones = smr.bones;
-            _outlineRenderer = outlineSmr;
-        }
+            MeshFilter mf = rend.GetComponent<MeshFilter>();
+            if (mf == null || mf.sharedMesh == null)
+                continue;
 
-        // Sub-mesh sayýsý kadar outline materyali ata
-        int subMeshCount = _mainRenderer.sharedMaterials.Length;
-        Material[] muls = new Material[subMeshCount];
-        for (int i = 0; i < subMeshCount; i++)
-        {
-            muls[i] = outlineMaterial;
-        }
-        _outlineRenderer.sharedMaterials = muls;
-        _outlineRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            if (rend.transform.Find("OutlineObject") != null)
+                continue;
 
-        _outlineObj.SetActive(_isOutlineActive);
+            GameObject outline = new GameObject("OutlineObject");
+            outline.transform.SetParent(rend.transform, false);
+            outline.transform.localPosition = Vector3.zero;
+            outline.transform.localRotation = Quaternion.identity;
+            outline.transform.localScale = Vector3.one;
+
+            MeshFilter outlineMF = outline.AddComponent<MeshFilter>();
+            outlineMF.sharedMesh = mf.sharedMesh;
+
+            MeshRenderer outlineMR = outline.AddComponent<MeshRenderer>();
+
+            Material[] mats = new Material[rend.sharedMaterials.Length];
+            for (int i = 0; i < mats.Length; i++)
+                mats[i] = outlineMaterial;
+
+            outlineMR.sharedMaterials = mats;
+            outlineMR.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            outlineMR.receiveShadows = false;
+
+            outline.SetActive(_isOutlineActive);
+
+            outlineObjects.Add(outline);
+        }
     }
 
-    private void UpdateOutlineState()
+    void UpdateOutlineState()
     {
-        if (_outlineObj != null)
+        foreach (GameObject obj in outlineObjects)
         {
-            _outlineObj.SetActive(_isOutlineActive);
+            if (obj != null)
+                obj.SetActive(_isOutlineActive);
         }
     }
 
-    // Editörde materyal deðiþirse anýnda güncelleme yapabilmek için
     void OnValidate()
     {
-        if (_outlineRenderer != null && outlineMaterial != null)
-        {
-            UpdateOutlineState();
-        }
+        UpdateOutlineState();
+    }
+
+    void OnMouseEnter()
+    {
+        IsOutlineActive = true;
+    }
+
+    void OnMouseExit()
+    {
+        IsOutlineActive = false;
     }
 }

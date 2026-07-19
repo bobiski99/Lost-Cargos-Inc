@@ -36,7 +36,7 @@ public class Hold : MonoBehaviour
     [SerializeField] private ScannerScreen scannerScreen;
     private bool scanning = false;
     private bool clickObject_Moving = false;
-
+    private Tweener rotateTween;
     void Start()
     {
 
@@ -62,7 +62,7 @@ public class Hold : MonoBehaviour
         hoverScale = startScale * 0.6f;
         cat_hoverscale = startScale * 0.8f;
         xray_hoverscale = startScale * 0.8f;
-        
+
     }
 
     private void OnMouseOver()
@@ -79,21 +79,23 @@ public class Hold : MonoBehaviour
 
     void OnMouseDown()
     {
-       
+        rotateTween?.Kill();
         if (CompareTag("scanner"))
         {
+            CursorManager.Instance.SetGrab();
             scanner_holding = true;
             holded = true;
             return;
         }
         if (CompareTag("coin"))
         {
+            CursorManager.Instance.SetGrab();
             holded = true;
             return;
         }
         Box bx = GetComponent<Box>();
         bool hasBox = bx != null;
-        
+
         if (bx.isOnTable == false)
         {
             Debug.Log("noldu lan hattayken tıklayamıyon mu artık hıyar :D");
@@ -103,8 +105,8 @@ public class Hold : MonoBehaviour
         {
             if (CompareTag("hatto"))
             {
+                CursorManager.Instance.SetGrab();
                 clickObject_Moving = true;
-                bx.isOnTable = false;
                 transform.DOKill();
 
                 transform.DORotate(hatTarget.eulerAngles, 1f);
@@ -114,23 +116,27 @@ public class Hold : MonoBehaviour
                     CargoCoreManager.instance.GivePoint(10);
                     hat_wear.transform.DOLocalMoveY(0.00542f, 0.2f).SetEase(Ease.OutBack);
                     transform.DOKill();
-                    
+                    if (gameObject.name.StartsWith("hat_cargo0"))
+                    {
+                        Debug.Log("cuğara buraya");
+                    }
                     DOVirtual.DelayedCall(3f, () =>
                     {
-                        hat_wear.transform.DOLocalMoveY(0.0082f, 1f).SetEase(Ease.InOutQuart); 
+                        hat_wear.transform.DOLocalMoveY(0.0082f, 1f).SetEase(Ease.InOutQuart);
                         transform.DOKill();
                         transform.DOKill(true);
                         Destroy(gameObject);
-
                     });
-                    
-                    
+
+
                 });
+
 
                 return;
             }
             if (CompareTag("discoball"))
             {
+                CursorManager.Instance.SetGrab();
                 clickObject_Moving = true;
                 transform.DOMoveY(10.93f, 0.5f).SetEase(Ease.OutBack);
                 CargoCoreManager.instance.GivePoint(15);
@@ -142,9 +148,10 @@ public class Hold : MonoBehaviour
                 return;
             }
 
-            
+
 
             holded = true;
+            CursorManager.Instance.SetGrab();
             if (Vector3.Distance(transform.position, StarterPoint) > 0.02f)
                 return;
             transform.DOKill();
@@ -152,7 +159,7 @@ public class Hold : MonoBehaviour
             transform.DORotate(holdRot, 0.6f).SetEase(Ease.OutBack);
             transform.DOShakeScale(0.3f, .3f).SetEase(Ease.OutBack);
         }
-        
+
 
     }
     public void PlayHatAnimation()
@@ -168,6 +175,7 @@ public class Hold : MonoBehaviour
     {
 
         holded = false;
+        CursorManager.Instance.SetNormal();
         scanner_holding = false;
         Box bx = GetComponent<Box>();
         if (scanning)
@@ -179,10 +187,11 @@ public class Hold : MonoBehaviour
         {
             return;
         }
+        rotateTween?.Kill();
         transform.DORotate(StarterRot, 0.5f).SetEase(Ease.OutElastic);
-        
+
         bool isCat = bx != null && bx.cat;
-        
+
         if (pivot != null)
         {
             if (isCat && pivot.CompareTag("cat_pivot"))
@@ -195,7 +204,7 @@ public class Hold : MonoBehaviour
                 transform.DOMoveY(-10, 0.5f).SetRelative(true).SetEase(Ease.InBack);
                 transform.DOKill();
                 Destroy(gameObject);
-                
+
                 CargoCoreManager.instance.GivePoint(50);
 
 
@@ -209,22 +218,22 @@ public class Hold : MonoBehaviour
 
                 transform.DOScale(new Vector3(-0.2f, -0.2f, -0.2f), 0.2f).SetRelative(true).SetEase(Ease.OutBack);
                 transform.DOMoveY(-10, 0.5f).SetRelative(true).SetEase(Ease.InBack).OnComplete(() =>
+                {
+                    if (bx.Danger)
                     {
-                        if (bx.Danger)
-                        {
-                            deliver.Awake();
-                            deliver.ActivateObject();
-                        }
-                        else
-                        {
-                            CargoCoreManager.instance.takeDamage();
-                        }
+                        deliver.Awake();
+                        deliver.ActivateObject();
+                    }
+                    else
+                    {
+                        CargoCoreManager.instance.takeDamage(2);
+                    }
 
-                        dangerDoorButton.toggle_case();
+                    dangerDoorButton.toggle_case();
 
-                        transform.DOKill();
-                        Destroy(gameObject);
-                    });
+                    transform.DOKill();
+                    Destroy(gameObject);
+                });
 
                 return;
             }
@@ -234,17 +243,17 @@ public class Hold : MonoBehaviour
                 transform.DOScale(new Vector3(-0.2f, -0.2f, -0.2f), 0.2f).SetEase(Ease.OutBack).SetRelative(true);
 
                 transform.DOMoveY(-10, .5f).SetRelative(true).SetEase(Ease.InBack).OnComplete(() =>
-                    {
-                        eskiKapi.TryBox(bx.color, bx.number, bx.Danger);
+                {
+                    eskiKapi.TryBox(bx.color, bx.number, bx.Danger);
 
-                        if (bx.Danger)
-                            CargoCoreManager.instance.takeDamage(1);
+                    if (bx.Danger)
+                        CargoCoreManager.instance.takeDamage(1);
 
-                        eskiKapi.OpenDoor();
+                    eskiKapi.OpenDoor();
 
-                        transform.DOKill();
-                        Destroy(gameObject);
-                    });
+                    transform.DOKill();
+                    Destroy(gameObject);
+                });
             }
 
         }
@@ -254,7 +263,7 @@ public class Hold : MonoBehaviour
         if (isCat && catObject != null && !catBoxAnimating)
         {
             catMoved = false;
-            
+
 
             catObject.DOKill();
 
@@ -273,7 +282,7 @@ public class Hold : MonoBehaviour
         {
             return;
         }
-            
+
         if (holded && !Input.GetMouseButton(0))
         {
             OnMouseUp();
@@ -304,14 +313,14 @@ public class Hold : MonoBehaviour
                     }
                 }
 
-               
+
 
                 Collider[] hitColliders = Physics.OverlapSphere(mouse3DKonumu, .2f);
 
                 Collider pvt = null;
                 Box bx = GetComponent<Box>();
                 bool isCat = bx != null && bx.cat;
-                
+
                 if (ItsSellable)
                 {
                     if (isCat && catObject != null && !catMoved && !catBoxAnimating)
@@ -378,7 +387,7 @@ public class Hold : MonoBehaviour
 
                             if ((transform.position - target).magnitude > 0.1f) transform.DORotate(StarterRot, 0.2f).SetEase(Ease.OutBack);
                             break;
-                            
+
 
                         }
                     }
@@ -397,7 +406,7 @@ public class Hold : MonoBehaviour
                     }
 
                 }
-                
+
                 GameObject yeniHedef = (pvt != null) ? pvt.gameObject : null;
 
 
@@ -410,9 +419,9 @@ public class Hold : MonoBehaviour
                         scannerScreen.StopScan();
                     }
                     if (scanning && (yeniHedef == null || !yeniHedef.CompareTag("xray")))
-                     {
-                         scanning = false;
-                     }
+                    {
+                        scanning = false;
+                    }
                     if (yeniHedef != null)
                     {
                         if (yeniHedef.CompareTag("cat_pivot"))
@@ -452,7 +461,16 @@ public class Hold : MonoBehaviour
                     pivot = yeniHedef;
                 }
                 transform.position = Vector3.Lerp(transform.position, target, Time.deltaTime * moveSpeed);
-                if (Mathf.Abs(transform.position.x - target.x) > 0.2f && pvt == null) transform.DORotate(new Vector3(0, (transform.position.x - target.x) * 12, 0) + holdRot, 0.2f).SetEase(Ease.OutBack);
+                Vector3 targetRot = new Vector3(0, (transform.position.x - target.x) * 12f, 0) + holdRot;
+
+                if (rotateTween == null || !rotateTween.IsActive())
+                {
+                    rotateTween = transform.DORotate(new Vector3(0, (transform.position.x - target.x) * 12, 0) + holdRot, 0.2f).SetEase(Ease.OutBack);
+                }
+                else
+                {
+                    rotateTween.ChangeEndValue(targetRot, true).Restart();
+                }
             }
         }
         else

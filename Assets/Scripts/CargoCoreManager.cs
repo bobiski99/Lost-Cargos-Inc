@@ -7,33 +7,35 @@ public class CargoCoreManager : MonoBehaviour
 {
     public static CargoCoreManager instance;
 
+    [SerializeField] private CameraSway cameraSway;
+
     public float BoxSpeed = 5f;
     public int Score;
     public float timer;
 
+    [Header("Health")]
     public int healt = 3;
     public RawImage[] healtIcons;
-    public DeliverButton deliverbtn;
 
+    [SerializeField] private Color normalHealthColor = new Color32(0x3B, 0xFF, 0x40, 0xFF);
+    [SerializeField] private Color criticalHealthColor = Color.red;
+    [SerializeField] private CigarettePack cigarettePack;
     public bool Danger = false;
     public bool pause = false;
 
-
-    public Sprite standarDead;
-
+    [Header("UI")]
     public TextMeshProUGUI scoreText;
     private int _currentDisplayedScore = 0;
     private Tween _scoreTween;
 
-
+    private Tween healthBlinkTween;
 
     private void Awake()
     {
-        if (instance != null) Destroy(gameObject);
-        else instance = this;
-
-       
-
+        if (instance != null)
+            Destroy(gameObject);
+        else
+            instance = this;
     }
 
     private void Start()
@@ -48,6 +50,7 @@ public class CargoCoreManager : MonoBehaviour
             Score = 0;
             timer = 0;
         }
+
         UpdateScore();
     }
 
@@ -69,7 +72,18 @@ public class CargoCoreManager : MonoBehaviour
                 break;
 
             healt--;
+
             PlayFlickerAndDestroy(healtIcons[healt]);
+
+            LightFlickerManager.Instance.Flicker();
+            cameraSway.DamageShake();
+
+            if (healt == 1)
+            {
+                StartCriticalHealthEffect();
+                cigarettePack.ShowPack();
+            }
+
         }
 
         if (healt == 0)
@@ -78,6 +92,7 @@ public class CargoCoreManager : MonoBehaviour
             Debug.Log("GAME OVER - Score: " + Score);
         }
     }
+    
     public void Heal(int amount = 1)
     {
         if (pause) return;
@@ -88,15 +103,31 @@ public class CargoCoreManager : MonoBehaviour
                 break;
 
             healtIcons[healt].gameObject.SetActive(true);
-
             healt++;
+        }
+
+        if (healt > 1)
+        {
+            StopCriticalHealthEffect();
         }
     }
 
-    public void GoDanger()
+    void StartCriticalHealthEffect()
     {
-        deliverbtn.ActivateObject();
+        healthBlinkTween?.Kill();
+
+        healtIcons[0].color = criticalHealthColor;
+
+        healthBlinkTween = healtIcons[0].DOColor(normalHealthColor, 0.18f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
     }
+
+    void StopCriticalHealthEffect()
+    {
+        healthBlinkTween?.Kill();
+
+        healtIcons[0].color = normalHealthColor;
+    }
+
 
     public void GivePoint(int point)
     {
@@ -106,12 +137,18 @@ public class CargoCoreManager : MonoBehaviour
 
     public void UpdateScore()
     {
-        if (_scoreTween != null) _scoreTween.Kill();
+        _scoreTween?.Kill();
 
-        _scoreTween = DOTween.To(() => _currentDisplayedScore, x => {
-            _currentDisplayedScore = x;
-            scoreText.text = _currentDisplayedScore.ToString();
-        }, Score, 1.5f).SetEase(Ease.OutQuad);
+        _scoreTween = DOTween.To(
+            () => _currentDisplayedScore,
+            x =>
+            {
+                _currentDisplayedScore = x;
+                scoreText.text = _currentDisplayedScore.ToString();
+            },
+            Score,
+            1.5f
+        ).SetEase(Ease.OutQuad);
     }
 
     public void PlayFlickerAndDestroy(RawImage img)

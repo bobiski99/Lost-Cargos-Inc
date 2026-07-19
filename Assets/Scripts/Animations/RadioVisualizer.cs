@@ -16,6 +16,7 @@ public class RadioVisualizer : MonoBehaviour
 
     void Start()
     {
+
         audioSource = GetComponent<AudioSource>();
         originalScale = visualTarget.localScale;
         originalPosition = visualTarget.localPosition;
@@ -44,5 +45,23 @@ public class RadioVisualizer : MonoBehaviour
             newPos,
             Time.deltaTime * lerpSpeed
         );
+    }
+    void OnMouseDown()
+    {
+        if (audioSource.isPlaying)
+            PauseRadio();
+        else
+            ResumeRadio();
+    }
+    public void PauseRadio()
+    {
+        audioSource.Pause();
+        visualTarget.localScale = originalScale;
+        visualTarget.localPosition = originalPosition;
+    }
+
+    public void ResumeRadio()
+    {
+        audioSource.UnPause();
     }
 }

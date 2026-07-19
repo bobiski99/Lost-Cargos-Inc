@@ -6,8 +6,10 @@ public class discoball_sc : MonoBehaviour
 {
     [SerializeField] private Light[] lights;
     [SerializeField] private AudioClip disco_music;
+    [SerializeField] private RadioVisualizer radio;
 
     private AudioSource musicSource;
+
 
     private Tween currentTween;
     private void Awake()
@@ -19,6 +21,8 @@ public class discoball_sc : MonoBehaviour
     }
     public void discotime()
     {
+
+        radio.PauseRadio();
         musicSource.Stop();
         currentTween?.Kill();
         transform.DOKill();
@@ -47,6 +51,7 @@ public class discoball_sc : MonoBehaviour
             musicSource.DOFade(0f, 1f).OnComplete(() =>
             {
                 musicSource.Stop();
+                radio.ResumeRadio();
             });
         });
     }

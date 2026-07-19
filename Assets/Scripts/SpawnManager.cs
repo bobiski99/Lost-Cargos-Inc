@@ -23,11 +23,11 @@ public class SpawnManager : MonoBehaviour
     public GameObject cat0Cargo;
     public GameObject cat1Cargo;
     public GameObject cat2Cargo;
+    public GameObject catSealCargo;
     public GameObject hatPrefab;
-
     public GameObject hatPrefab0;
+    public GameObject hatPrefab1;
     public GameObject discoPrefab;
-    public GameObject sealPrefab;
 
 
     void Update()
@@ -75,24 +75,19 @@ public class SpawnManager : MonoBehaviour
         if (chance < 3f)
         {
             // %3 Kedi
-            GameObject[] catVariants = { cat0Cargo, cat1Cargo, cat2Cargo };
+            GameObject[] catVariants = { cat0Cargo, cat1Cargo, cat2Cargo, catSealCargo };
             selectedPrefab = catVariants[Random.Range(0, catVariants.Length)];
         }
-        else if (chance < 100f)
+        else if (chance < 6f)
         {
             // %3 Hat
-            GameObject[] hatvariants = { hatPrefab, hatPrefab0 };
+            GameObject[] hatvariants = { hatPrefab, hatPrefab0, hatPrefab1 };
             selectedPrefab = hatvariants[Random.Range(0, hatvariants.Length)]; 
         }
-        else if (chance < 9f)
+        else if (chance < 7f)
         {
             // %3 Disco
             selectedPrefab = discoPrefab;
-        }
-        else if (chance < 10f)
-        {
-            // %1 Seal
-            selectedPrefab = sealPrefab;
         }
         else
         {
@@ -103,8 +98,7 @@ public class SpawnManager : MonoBehaviour
         //0-3       → Cat %3
         //3-6       → Hat %3
         //6-9       → Disco %3
-        //9-10      → Seal %1
-        //10-100    → Normal Box
+        //9-100    → Normal Box 
 
         Instantiate(selectedPrefab, spawnPos, Quaternion.identity);
     }

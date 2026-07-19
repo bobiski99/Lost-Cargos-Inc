@@ -7,7 +7,6 @@ public class Box : MonoBehaviour
     public bool Danger = false;
     public bool cat = false;
     public bool hat = false;
-    public bool seal = false;
     public bool discoball = false;
     public bool isOnTable = false;
     public bool CanBeScanned = false;
@@ -39,9 +38,5 @@ public class Box : MonoBehaviour
             hat = true;
         }
 
-        if (tag == "seal")
-        {
-            seal = true;
-        }
     }
 }
