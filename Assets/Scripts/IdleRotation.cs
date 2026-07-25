@@ -14,6 +14,8 @@ public class IdleRotation : MonoBehaviour
 
     void Update()
     {
+        if (PauseManager.Instance.IsPaused)
+            return;
         float x = (Mathf.PerlinNoise(Time.time * speed, 0f) - 0.5f) * 2f * maxAngle;
         float y = (Mathf.PerlinNoise(0f, Time.time * speed) - 0.5f) * 2f * maxAngle;
         float z = (Mathf.PerlinNoise(Time.time * speed, Time.time * speed) - 0.5f) * 2f * maxAngle;

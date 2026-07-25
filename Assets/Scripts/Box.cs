@@ -10,8 +10,7 @@ public class Box : MonoBehaviour
     public bool discoball = false;
     public bool isOnTable = false;
     public bool CanBeScanned = false;
-
-
+    public bool dice = false;
     void Start()
     {
 
@@ -19,7 +18,7 @@ public class Box : MonoBehaviour
         number = UnityEngine.Random.Range(1, 5);
         if (CompareTag("box"))
         {
-            Danger = Random.value <= 0.05f;
+            Danger = Random.value <= 1f;
         }
         if (tag == "catto")
         {
@@ -38,5 +37,9 @@ public class Box : MonoBehaviour
             hat = true;
         }
 
+        if (CompareTag("dice"))
+        {
+            dice = true;
+        }
     }
 }

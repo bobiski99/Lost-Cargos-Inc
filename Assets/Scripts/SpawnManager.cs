@@ -28,10 +28,12 @@ public class SpawnManager : MonoBehaviour
     public GameObject hatPrefab0;
     public GameObject hatPrefab1;
     public GameObject discoPrefab;
-
+    public GameObject dicePrefab;
 
     void Update()
     {
+        if (PauseManager.Instance.IsPaused)
+            return;
         // Toplam geçen süreyi tutuyoruz
         _timer = CargoCoreManager.instance.timer;
 
@@ -71,35 +73,40 @@ public class SpawnManager : MonoBehaviour
         GameObject selectedPrefab;
 
         float chance = Random.Range(0f, 100f);
-
-        if (chance < 3f)
+        if (chance < 100f)
         {
-            // %3 Kedi
+            // %1 Dice
+            selectedPrefab = dicePrefab;
+        }
+        else if (chance < 4f)
+        {
+            // %3 Cat
             GameObject[] catVariants = { cat0Cargo, cat1Cargo, cat2Cargo, catSealCargo };
             selectedPrefab = catVariants[Random.Range(0, catVariants.Length)];
         }
-        else if (chance < 6f)
+        else if (chance < 7f)
         {
             // %3 Hat
             GameObject[] hatvariants = { hatPrefab, hatPrefab0, hatPrefab1 };
-            selectedPrefab = hatvariants[Random.Range(0, hatvariants.Length)]; 
+            selectedPrefab = hatvariants[Random.Range(0, hatvariants.Length)];
         }
-        else if (chance < 7f)
+        else if (chance < 8f)
         {
-            // %3 Disco
+            // %1 Disco
             selectedPrefab = discoPrefab;
         }
         else
         {
-            // %90 Normal box
+            // %92 Normal Box
             selectedPrefab = variants[Random.Range(0, variants.Length)];
         }
-        //Chances
-        //0-3       → Cat %3
-        //3-6       → Hat %3
-        //6-9       → Disco %3
-        //9-100    → Normal Box 
 
+        // Chances
+        // 0-1      → Dice %1
+        // 1-4      → Cat %3
+        // 4-7      → Hat %3
+        // 7-8      → Disco %1
+        // 8-100    → Normal Box %92
         Instantiate(selectedPrefab, spawnPos, Quaternion.identity);
     }
 }

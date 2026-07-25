@@ -76,6 +76,8 @@ public class CigarettePack : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (PauseManager.Instance.IsPaused)
+            return;
         if (!showing)
             return;
 

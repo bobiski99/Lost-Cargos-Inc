@@ -9,6 +9,7 @@ public class yodel : MonoBehaviour
 
     private void Start()
     {
+       
         audioSource = GetComponent<AudioSource>();
         
         audioSource.playOnAwake = false;
@@ -17,6 +18,8 @@ public class yodel : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (PauseManager.Instance.IsPaused)
+            return;
         Box bx = GetComponent<Box>();
         if (bx.isOnTable == true)
         {

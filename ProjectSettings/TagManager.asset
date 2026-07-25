@@ -18,6 +18,7 @@ TagManager:
   - coin
   - discoball
   - box
+  - dice
   layers:
   - Default
   - TransparentFX

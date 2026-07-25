@@ -19,6 +19,10 @@ public class BoxTrigger : MonoBehaviour
             bx.CanBeScanned = true;
             other.transform.parent = boxPos;
             bx.isOnTable = true;
+            if (bx.dice)
+            {
+                DiceManager.Instance.StartDiceEvent(other.gameObject);
+            }
             Debug.Log("isontable=true");
             hold.enabled = true;
             hold.StarterPoint = boxPos.position;

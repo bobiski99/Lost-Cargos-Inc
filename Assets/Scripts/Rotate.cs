@@ -6,6 +6,8 @@ public class Rotate : MonoBehaviour
 
     void Update()
     {
+        if (PauseManager.Instance.IsPaused)
+            return;
         transform.Rotate(rotationAxis * Time.deltaTime);
 
     }

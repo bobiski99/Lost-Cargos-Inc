@@ -38,6 +38,8 @@ public class ColorScanner : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (PauseManager.Instance.IsPaused)
+            return;
         ScanForBox();
     }
 

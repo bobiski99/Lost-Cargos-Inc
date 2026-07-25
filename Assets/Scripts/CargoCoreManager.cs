@@ -21,7 +21,6 @@ public class CargoCoreManager : MonoBehaviour
     [SerializeField] private Color criticalHealthColor = Color.red;
     [SerializeField] private CigarettePack cigarettePack;
     public bool Danger = false;
-    public bool pause = false;
 
     [Header("UI")]
     public TextMeshProUGUI scoreText;
@@ -56,14 +55,12 @@ public class CargoCoreManager : MonoBehaviour
 
     private void Update()
     {
-        if (pause) return;
 
         timer += Time.deltaTime;
     }
 
     public void takeDamage(int damage = 1)
     {
-        if (pause) return;
         if (healt == 0) return;
 
         for (int i = 0; i < damage; i++)
@@ -88,14 +85,13 @@ public class CargoCoreManager : MonoBehaviour
 
         if (healt == 0)
         {
-            pause = true;
+            PauseManager.Instance.PauseGame();
             Debug.Log("GAME OVER - Score: " + Score);
         }
     }
     
     public void Heal(int amount = 1)
     {
-        if (pause) return;
 
         for (int i = 0; i < amount; i++)
         {
@@ -153,7 +149,6 @@ public class CargoCoreManager : MonoBehaviour
 
     public void PlayFlickerAndDestroy(RawImage img)
     {
-        if (pause) return;
 
         img.DOFade(0, 0.2f)
             .SetLoops(6, LoopType.Yoyo)

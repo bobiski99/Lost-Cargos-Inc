@@ -30,14 +30,17 @@ public class DoorOpener : MonoBehaviour
 
     public void TryBox(int _color, int _number, bool _danger = false)
     {
+        // Danger kutular?n hasar?n? Hold.cs yönetiyor.
+        if (_danger)
+            return;
 
         if (_color != color || _number != number)
         {
-            CargoCoreManager.instance.takeDamage(); return; 
+            CargoCoreManager.instance.takeDamage(1);
+            return;
         }
-       
-        CargoCoreManager.instance.GivePoint(31);
 
+        CargoCoreManager.instance.GivePoint(31);
     }
     public void OpenDoor()
     {

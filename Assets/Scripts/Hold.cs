@@ -37,11 +37,12 @@ public class Hold : MonoBehaviour
     private bool scanning = false;
     private bool clickObject_Moving = false;
     private Tweener rotateTween;
+    private OutlineController outline;
     void Start()
     {
 
         rb = GetComponent<Rigidbody>();
-
+        outline = GetComponent<OutlineController>();
         dangerDoorButton = FindAnyObjectByType<DangerDoorButton>();
         deliver = FindAnyObjectByType<DeliverButton>();
         scannerScreen = FindAnyObjectByType<ScannerScreen>();
@@ -67,8 +68,26 @@ public class Hold : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (!holded && Vector3.Distance(transform.position, StarterPoint) < 0.02f)
-            transform.GetComponent<OutlineController>().IsOutlineActive = true;
+        if (PauseManager.Instance.IsPaused)
+        {
+            outline.IsOutlineActive = false;
+            return;
+        }
+
+        if (DiceManager.Instance != null && DiceManager.Instance.IsDiceEvent)
+        {
+            outline.IsOutlineActive = false;
+            return;
+        }
+
+        if (holded)
+        {
+            outline.IsOutlineActive = false;
+            return;
+        }
+
+        if (Vector3.Distance(transform.position, StarterPoint) < 0.02f)
+            outline.IsOutlineActive = true;
     }
 
     private void OnMouseExit()
@@ -79,7 +98,12 @@ public class Hold : MonoBehaviour
 
     void OnMouseDown()
     {
+        if (PauseManager.Instance.IsPaused)
+            return;
+        if (DiceManager.Instance != null && DiceManager.Instance.IsDiceEvent)
+            return;
         rotateTween?.Kill();
+        
         if (CompareTag("scanner"))
         {
             CursorManager.Instance.SetGrab();
@@ -101,6 +125,7 @@ public class Hold : MonoBehaviour
             Debug.Log("noldu lan hattayken tıklayamıyon mu artık hıyar :D");
             return;
         }
+        outline.IsOutlineActive = false;
         if (bx.isOnTable == true)
         {
             if (CompareTag("hatto"))
@@ -173,7 +198,10 @@ public class Hold : MonoBehaviour
     }
     void OnMouseUp()
     {
-
+        if (PauseManager.Instance.IsPaused)
+            return;
+        if (DiceManager.Instance != null && DiceManager.Instance.IsDiceEvent)
+            return;
         holded = false;
         CursorManager.Instance.SetNormal();
         scanner_holding = false;
@@ -216,24 +244,32 @@ public class Hold : MonoBehaviour
             {
                 dont = true;
 
-                transform.DOScale(new Vector3(-0.2f, -0.2f, -0.2f), 0.2f).SetRelative(true).SetEase(Ease.OutBack);
-                transform.DOMoveY(-10, 0.5f).SetRelative(true).SetEase(Ease.InBack).OnComplete(() =>
-                {
-                    if (bx.Danger)
-                    {
-                        deliver.Awake();
-                        deliver.ActivateObject();
-                    }
-                    else
-                    {
-                        CargoCoreManager.instance.takeDamage(2);
-                    }
+                transform.DOScale(new Vector3(-0.2f, -0.2f, -0.2f), 0.2f)
+                    .SetRelative(true)
+                    .SetEase(Ease.OutBack);
 
-                    dangerDoorButton.toggle_case();
+                transform.DOMoveY(-10, 0.5f)
+                    .SetRelative(true)
+                    .SetEase(Ease.InBack)
+                    .OnComplete(() =>
+                    {
+                        if (bx.Danger)
+                        {
+                            deliver.Awake();
+                            dangerDoorButton.waitingForDeliver = true;
+                            deliver.ActivateObject();
+                        }
+                        else
+                        {
+                            // Normal kutu danger kapıya
+                            CargoCoreManager.instance.takeDamage(1);
+                        }
 
-                    transform.DOKill();
-                    Destroy(gameObject);
-                });
+                        dangerDoorButton.toggle_case();
+
+                        transform.DOKill();
+                        Destroy(gameObject);
+                    });
 
                 return;
             }
@@ -247,7 +283,10 @@ public class Hold : MonoBehaviour
                     eskiKapi.TryBox(bx.color, bx.number, bx.Danger);
 
                     if (bx.Danger)
-                        CargoCoreManager.instance.takeDamage(1);
+                    {
+                        // Danger kutu normal kapıya gitti
+                        CargoCoreManager.instance.takeDamage(2);
+                    }
 
                     eskiKapi.OpenDoor();
 
@@ -278,6 +317,23 @@ public class Hold : MonoBehaviour
 
     void Update()
     {
+        if (DiceManager.Instance != null && DiceManager.Instance.IsDiceEvent)
+        {
+            if (holded)
+                OnMouseUp();
+
+            outline.IsOutlineActive = false;
+            return;
+        }
+
+        if (PauseManager.Instance.IsPaused)
+        {
+            if (holded)
+                OnMouseUp();
+
+            outline.IsOutlineActive = false;
+            return;
+        }
         if (clickObject_Moving)
         {
             return;
@@ -291,7 +347,7 @@ public class Hold : MonoBehaviour
         if (dont) return;
         if (holded)
         {
-
+            outline.IsOutlineActive = false;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
             Plane zeminDuzlemi = new Plane(Vector3.up, new Vector3(0, StarterPoint.y, 0));

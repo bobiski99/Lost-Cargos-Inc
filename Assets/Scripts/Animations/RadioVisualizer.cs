@@ -48,6 +48,8 @@ public class RadioVisualizer : MonoBehaviour
     }
     void OnMouseDown()
     {
+        if (PauseManager.Instance.IsPaused)
+            return;
         if (audioSource.isPlaying)
             PauseRadio();
         else

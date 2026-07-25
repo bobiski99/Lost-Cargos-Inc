@@ -8,6 +8,7 @@ public class DangerDoorButton : MonoBehaviour
     [SerializeField] private Transform dontbuton;
     [SerializeField] private Transform case1;
     [SerializeField] private Transform case2;
+    public bool waitingForDeliver = false;
     public bool dangerOpen = false;
     private bool isAnimating = false;
     void Start()
@@ -16,9 +17,10 @@ public class DangerDoorButton : MonoBehaviour
     }
     public void toggle_case()
     {
+        
         if (isAnimating)
             return;
-
+        
         isAnimating = true;
 
         Sequence seq = DOTween.Sequence();
@@ -45,6 +47,10 @@ public class DangerDoorButton : MonoBehaviour
     }
     private void OnMouseDown()
     {
+        if (PauseManager.Instance.IsPaused)
+            return;
+        if (waitingForDeliver)
+            return;
         toggle_case();
     }
     public void TryDangerBox(Box box)

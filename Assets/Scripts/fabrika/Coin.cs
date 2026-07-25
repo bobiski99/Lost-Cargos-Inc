@@ -15,6 +15,8 @@ public class Coin : MonoBehaviour
     GameObject target;
     void Update()
     {
+        if (PauseManager.Instance.IsPaused)
+            return;
         if (boxPoint.childCount == 0)
         {
             slider.gameObject.SetActive(false);

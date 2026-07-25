@@ -11,7 +11,7 @@ public class DeliverButton : MonoBehaviour
     [SerializeField] private Vector3 _targetbase;
     [SerializeField] private Vector3 _targetrotbase;
     [SerializeField] private float _animationDuration = 1.5f;
-
+    [SerializeField] private DangerDoorButton dangerDoorButton;
     [SerializeField] private burning_light lightController;
 
     [Header("Bilesenler")]
@@ -34,6 +34,9 @@ public class DeliverButton : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (PauseManager.Instance.IsPaused)
+            return;
+        dangerDoorButton.waitingForDeliver = false;
         if (_targetCollider != null)
             _targetCollider.enabled = false;
         CargoCoreManager.instance.GivePoint(100);

@@ -84,11 +84,15 @@ public class OutlineController : MonoBehaviour
 
     void OnMouseEnter()
     {
+        if (PauseManager.Instance.IsPaused)
+            return;
         IsOutlineActive = true;
     }
 
     void OnMouseExit()
     {
+        if (PauseManager.Instance.IsPaused)
+            return;
         IsOutlineActive = false;
     }
 }
