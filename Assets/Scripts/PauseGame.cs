@@ -50,17 +50,26 @@ public class PauseManager : MonoBehaviour
        
         if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
         {
-            if (IsPaused)
+            if (IsPaused) 
+            {
                 ResumeGame();
+            }
+
             else
+            {
                 PauseGame();
+            }
+                
         }
     }
 
     public void PauseGame()
     {
         if (IsPaused)
+        {
             return;
+        }
+            
 
         IsPaused = true;
 
@@ -87,17 +96,26 @@ public class PauseManager : MonoBehaviour
     public void ResumeGame()
     {
         if (!IsPaused)
+        {
             return;
+        }
+            
 
         IsPaused = false;
 
         blinkTween?.Kill();
 
         if (pauseTitle != null)
+        {
             pauseTitle.alpha = 1f;
+        }
+            
 
         if (resumeSound != null)
+        {
             sfxSource.PlayOneShot(resumeSound);
+        }
+            
 
         Time.timeScale = 1f;
 
@@ -110,20 +128,21 @@ public class PauseManager : MonoBehaviour
     void FadeOutAndPause(AudioSource source)
     {
         if (source == null)
+        {
             return;
+        }
 
         source.DOKill();
 
-        source.DOFade(0f, fadeDuration).SetUpdate(true).OnComplete(() =>
-            {
-                source.Pause();
-            });
+        source.DOFade(0f, fadeDuration).SetUpdate(true).OnComplete(() =>{source.Pause();});
     }
 
     void ResumeWithFade(AudioSource source)
     {
         if (source == null)
+        {
             return;
+        }
 
         source.DOKill();
 

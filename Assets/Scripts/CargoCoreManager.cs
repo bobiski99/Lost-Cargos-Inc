@@ -32,9 +32,14 @@ public class CargoCoreManager : MonoBehaviour
     private void Awake()
     {
         if (instance != null)
+        {
             Destroy(gameObject);
+        }
         else
+        {
+
             instance = this;
+        }
     }
 
     private void Start()
@@ -66,7 +71,9 @@ public class CargoCoreManager : MonoBehaviour
         for (int i = 0; i < damage; i++)
         {
             if (healt == 0)
+            {
                 break;
+            }
 
             healt--;
 
@@ -96,7 +103,10 @@ public class CargoCoreManager : MonoBehaviour
         for (int i = 0; i < amount; i++)
         {
             if (healt >= healtIcons.Length)
+            {
+
                 break;
+            }
 
             healtIcons[healt].gameObject.SetActive(true);
             healt++;

@@ -15,9 +15,7 @@ public class CursorManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-
         Cursor.visible = false;
-
         rect = cursorImage.rectTransform;
 
         cursorImage.sprite = normalCursor;

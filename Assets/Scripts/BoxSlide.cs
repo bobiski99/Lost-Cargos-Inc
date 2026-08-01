@@ -19,7 +19,9 @@ public class BoxSlide : MonoBehaviour
     void Update()
     {
         if (PauseManager.Instance.IsPaused)
+        {
             return;
+        }
         if (timer >= 1)
         {
             transform.DOShakeRotation(1f, 2f);

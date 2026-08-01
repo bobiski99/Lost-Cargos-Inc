@@ -9,15 +9,12 @@ public class burning_light : MonoBehaviour
     private Light _light;
 
     private Coroutine routine;
-
-    [Header("Şiddet Ayarları")]
     public float minIntensity = 0.7f;
     public float maxIntensity = 1.3f;
 
     private float defaultMin;
     private float defaultMax;
 
-    [Header("Hız Ayarları")]
     public float minDuration = 0.05f;
     public float maxDuration = 0.2f;
 
@@ -28,11 +25,9 @@ public class burning_light : MonoBehaviour
         _light = GetComponent<Light>();
         if (_light == null)
         {
-            Debug.LogError("Bu objede bir Light bileşeni bulunamadı!");
             return;
         }
         pointLight.enabled = false;
-        // İlk titremeyi başlat
         Flicker();
 
     }
@@ -42,20 +37,10 @@ public class burning_light : MonoBehaviour
 
         minIntensity = defaultMin;
         maxIntensity = defaultMax;
-
-        // 3 saniye sonra sönmeye başla
         DOVirtual.DelayedCall(seconds, () =>
         {
-            DOTween.To(() => minIntensity,
-                x => minIntensity = x,
-                0f,
-                1f);
-
-            DOTween.To(() => maxIntensity,
-                x => maxIntensity = x,
-                0f,
-                1f)
-            .OnComplete(() =>
+            DOTween.To(() => minIntensity,x => minIntensity = x,0f,1f);
+            DOTween.To(() => maxIntensity,x => maxIntensity = x,0f,1f).OnComplete(() =>
             {
                 pointLight.enabled = false;
             });
@@ -64,19 +49,16 @@ public class burning_light : MonoBehaviour
 
     void Flicker()
     {
-        // Rastgele bir hedef şiddet ve süre seç
+        
         float targetIntensity = Random.Range(minIntensity, maxIntensity);
         float duration = Random.Range(minDuration, maxDuration);
-
-        // DOTween ile yumuşak geçiş yap
         _light.DOIntensity(targetIntensity, duration)
             .SetEase(Ease.InOutSine)
-            .OnComplete(Flicker); // Animasyon bitince kendini tekrar çağır
+            .OnComplete(Flicker);
     }
 
     private void OnDestroy()
     {
-        // Obje yok edilirse tween'i durdur (bellek yönetimi için)
         _light.DOKill();
     }
 }

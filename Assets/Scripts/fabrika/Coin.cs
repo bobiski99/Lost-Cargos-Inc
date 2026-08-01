@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 public class Coin : MonoBehaviour
 {
@@ -28,7 +27,10 @@ public class Coin : MonoBehaviour
 
         slider.gameObject.SetActive(target != null);
         _text.gameObject.SetActive(slider.value >= 1 && target != null);
-        if ((transform.position - boxPoint.position).magnitude >= 1f) { target = null; _var = 0; }
+        if ((transform.position - boxPoint.position).magnitude >= 1f) 
+        { 
+            target = null; _var = 0; 
+        }
         else if (_var <= 0.5f)
         {
             target = boxPoint.GetChild(0).gameObject;
@@ -38,7 +40,11 @@ public class Coin : MonoBehaviour
         }
 
         
-        if (target == null) { _var = 0; return; }
+        if (target == null) 
+        {
+            _var = 0; return; 
+        }
+
         if ((transform.position - oldPos).magnitude >= scratingDis) _var += 1f * Time.deltaTime;
 
         slider.value = _var;

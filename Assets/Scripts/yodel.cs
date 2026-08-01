@@ -19,7 +19,9 @@ public class yodel : MonoBehaviour
     private void OnMouseDown()
     {
         if (PauseManager.Instance.IsPaused)
+        {
             return;
+        }
         Box bx = GetComponent<Box>();
         if (bx.isOnTable == true)
         {

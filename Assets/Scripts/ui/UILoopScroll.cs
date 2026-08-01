@@ -14,7 +14,6 @@ public class UILoopScroll : MonoBehaviour
 
     void Update()
     {
-        // Resmin UV koordinatlarýný sürekli kaydýrýyoruz
         Rect currentUV = _rawImage.uvRect;
         currentUV.x += _speed.x * Time.deltaTime;
         currentUV.y += _speed.y * Time.deltaTime;

@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class OutlineController : MonoBehaviour
 {
-    [Header("Görsel Ayarlar")]
+    [Header("Visual Settings")]
     [SerializeField] private Material outlineMaterial;
 
     private readonly List<GameObject> outlineObjects = new();
 
-    [Header("Kontrol")]
+    [Header("Control")]
     [SerializeField] private bool _isOutlineActive;
 
     public bool IsOutlineActive
@@ -16,7 +16,10 @@ public class OutlineController : MonoBehaviour
         get => _isOutlineActive;
         set
         {
-            if (_isOutlineActive == value) return;
+            if (_isOutlineActive == value)
+            {
+                return;
+            }
 
             _isOutlineActive = value;
             UpdateOutlineState();

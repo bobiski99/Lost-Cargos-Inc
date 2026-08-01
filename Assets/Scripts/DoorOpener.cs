@@ -14,7 +14,6 @@ public class DoorOpener : MonoBehaviour
 
     [SerializeField] private int color, number;
 
-    [Header("Ses Ayarlarý")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip openSound;
     [SerializeField] private AudioClip closeSound;
@@ -30,9 +29,10 @@ public class DoorOpener : MonoBehaviour
 
     public void TryBox(int _color, int _number, bool _danger = false)
     {
-        // Danger kutular?n hasar?n? Hold.cs yönetiyor.
         if (_danger)
+        {
             return;
+        }
 
         if (_color != color || _number != number)
         {

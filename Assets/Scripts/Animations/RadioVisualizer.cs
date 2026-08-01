@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class RadioVisualizer : MonoBehaviour
 {
-    public Transform visualTarget; // dýþ model
+    public Transform visualTarget;
     public float scaleMultiplier = 5f;
     public float lerpSpeed = 10f;
     public FFTWindow fftWindow = FFTWindow.Blackman;
@@ -28,7 +28,6 @@ public class RadioVisualizer : MonoBehaviour
         float intensity = spectrum[spectrumSampleIndex] * scaleMultiplier;
         intensity = Mathf.Clamp(intensity, 0f, 1f);
 
-        // Yeni scale hesapla
         Vector3 targetScale = originalScale * (1f + intensity);
         visualTarget.localScale = Vector3.Lerp(
             visualTarget.localScale,
@@ -36,7 +35,6 @@ public class RadioVisualizer : MonoBehaviour
             Time.deltaTime * lerpSpeed
         );
 
-        // Yükseklik farkýný telafi et
         float yOffset = (visualTarget.localScale.y - originalScale.y) * 0.5f;
         Vector3 newPos = originalPosition + Vector3.up * yOffset;
 
@@ -49,11 +47,18 @@ public class RadioVisualizer : MonoBehaviour
     void OnMouseDown()
     {
         if (PauseManager.Instance.IsPaused)
+        {
             return;
+        }
         if (audioSource.isPlaying)
+        {
             PauseRadio();
+        }
+
         else
+        {
             ResumeRadio();
+        }
     }
     public void PauseRadio()
     {

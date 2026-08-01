@@ -4,7 +4,7 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class DeliverButton : MonoBehaviour
 {
-    [Header("Transform Ayarlarý")]
+    [Header("Transform Settings")]
     [SerializeField] private Vector3 _targetPosition;
     [SerializeField] private Vector3 _targetRotation;
     [SerializeField] private Vector3 _targetPosition1;
@@ -14,7 +14,6 @@ public class DeliverButton : MonoBehaviour
     [SerializeField] private DangerDoorButton dangerDoorButton;
     [SerializeField] private burning_light lightController;
 
-    [Header("Bilesenler")]
     [SerializeField] private Collider _targetCollider;
 
     public void Awake()
@@ -35,10 +34,16 @@ public class DeliverButton : MonoBehaviour
     private void OnMouseDown()
     {
         if (PauseManager.Instance.IsPaused)
+        {
             return;
+        }
         dangerDoorButton.waitingForDeliver = false;
         if (_targetCollider != null)
+        {
             _targetCollider.enabled = false;
+        }
+
+
         CargoCoreManager.instance.GivePoint(100);
         CargoCoreManager.instance.Heal();
         lightController.TurnOnForSeconds(3f);

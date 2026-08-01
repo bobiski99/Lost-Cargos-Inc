@@ -30,7 +30,6 @@ public class CigarettePack : MonoBehaviour
         startRotation = lid.localEulerAngles;
     }
 
-    // D??ar?dan ça?r?lacak
     public void ShowPack()
     {
         if (showing)

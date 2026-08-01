@@ -87,7 +87,10 @@ public class Hold : MonoBehaviour
         }
 
         if (Vector3.Distance(transform.position, StarterPoint) < 0.02f)
+        {
+
             outline.IsOutlineActive = true;
+        }
     }
 
     private void OnMouseExit()
@@ -99,9 +102,15 @@ public class Hold : MonoBehaviour
     void OnMouseDown()
     {
         if (PauseManager.Instance.IsPaused)
+        {
+
             return;
+        }
         if (DiceManager.Instance != null && DiceManager.Instance.IsDiceEvent)
+        {
+
             return;
+        }
         rotateTween?.Kill();
         
         if (CompareTag("scanner"))
@@ -320,7 +329,9 @@ public class Hold : MonoBehaviour
         if (DiceManager.Instance != null && DiceManager.Instance.IsDiceEvent)
         {
             if (holded)
+            {
                 OnMouseUp();
+            }
 
             outline.IsOutlineActive = false;
             return;
@@ -329,7 +340,10 @@ public class Hold : MonoBehaviour
         if (PauseManager.Instance.IsPaused)
         {
             if (holded)
+            {
+
                 OnMouseUp();
+            }
 
             outline.IsOutlineActive = false;
             return;
@@ -344,7 +358,11 @@ public class Hold : MonoBehaviour
             OnMouseUp();
             return;
         }
-        if (dont) return;
+        if (dont)
+        {
+
+            return;
+        }
         if (holded)
         {
             outline.IsOutlineActive = false;
@@ -410,7 +428,11 @@ public class Hold : MonoBehaviour
                     foreach (Collider col in hitColliders)
                     {
 
-                        if (col.gameObject == gameObject) continue;
+                        if (col.gameObject == gameObject)
+                        {
+                            continue;
+                        }
+                            
 
                         if (col.CompareTag("xray") && !isCat)
                         {
@@ -434,7 +456,10 @@ public class Hold : MonoBehaviour
                     foreach (Collider col in hitColliders)
                     {
 
-                        if (col.gameObject == gameObject) continue;
+                        if (col.gameObject == gameObject)
+                        {
+                            continue;
+                        }
 
                         if (col.CompareTag("cat_pivot") && isCat)
                         {
@@ -450,7 +475,10 @@ public class Hold : MonoBehaviour
                     foreach (Collider col in hitColliders)
                     {
 
-                        if (col.gameObject == gameObject) continue;
+                        if (col.gameObject == gameObject) 
+                        {
+                            continue;
+                        }
 
                         if (col.CompareTag("dangerpivot") && dangerDoorButton.dangerOpen && !isCat)
                         {

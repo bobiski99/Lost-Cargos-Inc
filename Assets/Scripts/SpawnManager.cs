@@ -33,14 +33,12 @@ public class SpawnManager : MonoBehaviour
     void Update()
     {
         if (PauseManager.Instance.IsPaused)
+        {
             return;
-        // Toplam geçen süreyi tutuyoruz
+        }
         _timer = CargoCoreManager.instance.timer;
-
-        // Mevcut spawn aralığını hesapla
         float currentInterval = CalculateCurrentInterval();
 
-        // Spawn zamanı kontrolü
         if (Time.time >= _nextSpawnTime)
         {
             SpawnRandomVariant();
@@ -50,13 +48,9 @@ public class SpawnManager : MonoBehaviour
 
     float CalculateCurrentInterval()
     {
-        // Kaç tane 10 saniyelik blok geçtiğini hesapla (0, 1, 2, 3...)
         int steps = Mathf.FloorToInt(_timer / reductionStepTime);
-
-        // Yeni süreyi hesapla: Başlangıç - (Adım Sayısı * 0.3)
         float calculatedInterval = baseSpawnInterval - (steps * reductionAmount);
 
-        // Matematiksel limit koy: Belirlediğimiz minSpawnInterval (4) altına düşmesin
         return Mathf.Max(calculatedInterval, minSpawnInterval);
     }
     void SpawnRandomVariant()
@@ -73,7 +67,7 @@ public class SpawnManager : MonoBehaviour
         GameObject selectedPrefab;
 
         float chance = Random.Range(0f, 100f);
-        if (chance < 100f)
+        if (chance < 1f)
         {
             // %1 Dice
             selectedPrefab = dicePrefab;
@@ -90,7 +84,7 @@ public class SpawnManager : MonoBehaviour
             GameObject[] hatvariants = { hatPrefab, hatPrefab0, hatPrefab1 };
             selectedPrefab = hatvariants[Random.Range(0, hatvariants.Length)];
         }
-        else if (chance < 8f)
+        else if (chance < 10f)
         {
             // %1 Disco
             selectedPrefab = discoPrefab;

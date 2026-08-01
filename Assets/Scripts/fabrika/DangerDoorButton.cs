@@ -48,15 +48,22 @@ public class DangerDoorButton : MonoBehaviour
     private void OnMouseDown()
     {
         if (PauseManager.Instance.IsPaused)
+        {
             return;
+        }
         if (waitingForDeliver)
+        {
+
             return;
+        }
         toggle_case();
     }
     public void TryDangerBox(Box box)
     {
         if (!dangerOpen)
+        {
             return;
+        }
 
         if (box.Danger)
         {

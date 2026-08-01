@@ -46,10 +46,8 @@ public class CameraSway : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
-        // Mouse Position
         Vector3 mouseOffset = new Vector3(-mouseX, -mouseY, 0) * positionSwayAmount;
 
-        // Idle Position
         Vector3 idleOffset = new Vector3(
             Mathf.PerlinNoise(timeCounter, 0f) - 0.5f,
             Mathf.PerlinNoise(0f, timeCounter) - 0.5f,
@@ -64,14 +62,12 @@ public class CameraSway : MonoBehaviour
             Time.deltaTime * swaySmoothness
         );
 
-        // Mouse Rotation
         Vector3 mouseRot = new Vector3(
             mouseY * rotationSwayAmount,
             -mouseX * rotationSwayAmount,
             mouseX * rotationSwayAmount * 0.5f
         );
 
-        // Idle Rotation
         Vector3 idleRot = new Vector3(
             Mathf.PerlinNoise(timeCounter + 10f, 0f) - 0.5f,
             Mathf.PerlinNoise(0f, timeCounter + 10f) - 0.5f,

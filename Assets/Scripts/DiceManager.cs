@@ -111,8 +111,7 @@ public class DiceManager : MonoBehaviour
         questionPanel.SetActive(false);
         timerText.gameObject.SetActive(false);
 
-        CargoCoreManager.instance.Score =
-            Mathf.Max(0, CargoCoreManager.instance.Score - 100);
+        CargoCoreManager.instance.Score=Mathf.Max(0, CargoCoreManager.instance.Score - 100);
 
         CargoCoreManager.instance.UpdateScore();
 
@@ -149,15 +148,13 @@ public class DiceManager : MonoBehaviour
         {
             CargoCoreManager.instance.Score *= 2;
 
-            resultText.text =
-                $"YOU WON!\n\nDice : {value}\n\nScore x2";
+            resultText.text =$"YOU WON!\n\nDice : {value}\n\nScore x2";
         }
         else
         {
             CargoCoreManager.instance.Score /= 2;
 
-            resultText.text =
-                $"YOU LOST!\n\nDice : {value}\n\nScore /2";
+            resultText.text =$"YOU LOST!\n\nDice : {value}\n\nScore /2";
         }
 
         CargoCoreManager.instance.UpdateScore();

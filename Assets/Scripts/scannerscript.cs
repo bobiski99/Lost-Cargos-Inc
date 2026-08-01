@@ -35,7 +35,10 @@ public class ScannerScreen : MonoBehaviour
     public void StartScan(Box box)
     {
         if (scanRoutine != null)
+        {
             StopCoroutine(scanRoutine);
+
+        }
 
         scanRoutine = StartCoroutine(ScanRoutine(box));
     }
@@ -77,7 +80,9 @@ public class ScannerScreen : MonoBehaviour
                 timer += 0.25f;
 
                 if (timer >= 1f)
+                {
                     break;
+                }
             }
         }
 

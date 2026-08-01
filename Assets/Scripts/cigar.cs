@@ -23,26 +23,24 @@ public class cigar : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         if (smokeEffect != null)
+        {
             smokeEffect.enabled = false;
+        }
     }
 
     public void Use()
     {
         moveTween?.Kill();
 
-        // Çakmak sesi
         audioSource.PlayOneShot(lighterClip);
 
-        // 1 saniye sonra
         DOVirtual.DelayedCall(1f, () =>
         {
 
-            // Sigaray? öne getir
             moveTween = transform
                 .DOLocalMoveZ(shownZ, 0.4f)
                 .SetEase(Ease.Linear);
 
-            // Duman? ba?lat
             if (smokeEffect != null)
             {
                 smokeEffect.enabled = true;
@@ -51,7 +49,6 @@ public class cigar : MonoBehaviour
             }
         });
 
-        // 10 saniye sonra geri çek
         DOVirtual.DelayedCall(11f, () =>
         {
             moveTween?.Kill();
@@ -60,7 +57,6 @@ public class cigar : MonoBehaviour
                 .DOLocalMoveZ(hiddenZ, 0.4f)
                 .SetEase(Ease.Linear);
 
-            // Duman? kapat
             if (smokeEffect != null)
             {
                 smokeEffect.Stop();

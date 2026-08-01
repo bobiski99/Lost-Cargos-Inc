@@ -11,7 +11,6 @@ public class LightFlickerManager : MonoBehaviour
     {
         Instance = this;
 
-        // ?stersen otomatik bulsun
         // lights = FindObjectsByType<Light>(FindObjectsSortMode.None);
     }
 

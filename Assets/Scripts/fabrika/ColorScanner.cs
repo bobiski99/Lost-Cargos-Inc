@@ -3,7 +3,7 @@ using DG.Tweening;
 
 public class ColorScanner : MonoBehaviour
 {
-    [Header("Ayarlar")]
+    [Header("Settings")]
     [SerializeField] private Transform _rayOrigin;
     [SerializeField] private float _rayDistance = 10f;
     [SerializeField] private float _emissionIntensity = 3f;
@@ -32,21 +32,27 @@ public class ColorScanner : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Renderer veya 2. Material slotu eksik!");
+            Debug.LogError("Renderer or slot is missing");
         }
     }
 
     private void FixedUpdate()
     {
         if (PauseManager.Instance.IsPaused)
+        {
             return;
+        }
+            
         ScanForBox();
     }
 
     public void ScanForBox()
     {
         if (_isProcessing || _targetSlotMaterial == null || !holding_scanner)
+        {
             return;
+        }
+            
 
         Collider[] hits = Physics.OverlapSphere(_rayOrigin.position, _scanRadius);
 
@@ -55,7 +61,9 @@ public class ColorScanner : MonoBehaviour
             if (hit.TryGetComponent<Box>(out Box boxData))
             {
                 if (!boxData.CanBeScanned)
+                {
                     continue;
+                }
 
                 ApplyEmissionEffect(boxData.color);
                 return;
@@ -72,7 +80,11 @@ public class ColorScanner : MonoBehaviour
     }
     private void OnDrawGizmosSelected()
     {
-        if (_rayOrigin == null) return;
+        if (_rayOrigin == null)
+        {
+            return;
+        }
+            
 
         Gizmos.color = Color.cyan;
 
@@ -124,6 +136,10 @@ public class ColorScanner : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_targetSlotMaterial != null) Destroy(_targetSlotMaterial);
+        if (_targetSlotMaterial != null)
+        {
+            Destroy(_targetSlotMaterial);
+
+        }
     }
 }
