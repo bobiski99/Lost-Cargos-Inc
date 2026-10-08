@@ -107,6 +107,7 @@ public class CargoCoreManager : MonoBehaviour
 
                 break;
             }
+            
 
             healtIcons[healt].gameObject.SetActive(true);
             healt++;

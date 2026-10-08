@@ -72,19 +72,19 @@ public class SpawnManager : MonoBehaviour
             // %1 Dice
             selectedPrefab = dicePrefab;
         }
-        else if (chance < 4f)
+        else if (chance < 3f)
         {
             // %3 Cat
             GameObject[] catVariants = { cat0Cargo, cat1Cargo, cat2Cargo, catSealCargo };
             selectedPrefab = catVariants[Random.Range(0, catVariants.Length)];
         }
-        else if (chance < 7f)
+        else if (chance < 5f)
         {
             // %3 Hat
             GameObject[] hatvariants = { hatPrefab, hatPrefab0, hatPrefab1 };
             selectedPrefab = hatvariants[Random.Range(0, hatvariants.Length)];
         }
-        else if (chance < 10f)
+        else if (chance < 8f)
         {
             // %1 Disco
             selectedPrefab = discoPrefab;

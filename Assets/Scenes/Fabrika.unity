@@ -10016,7 +10016,7 @@ MonoBehaviour:
   baseSpawnInterval: 10
   minSpawnInterval: 4
   reductionAmount: 0.3
-  reductionStepTime: 10
+  reductionStepTime: 5
   cat0Cargo: {fileID: 6634354653874845232, guid: 7bbdfb271f479704fa9736f2ead67e86, type: 3}
   cat1Cargo: {fileID: 6634354653874845232, guid: 3d8dd76794dd5bd428efe099c8d8d4fe, type: 3}
   cat2Cargo: {fileID: 6634354653874845232, guid: 8c7877be9e33c894abb7be189a45fab4, type: 3}
