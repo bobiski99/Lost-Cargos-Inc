@@ -12,27 +12,27 @@ public class ContractFPSController_sc : MonoBehaviour
     [SerializeField] private float maxLookAngle = 85f;
 
     [Header("Control")]
-    [SerializeField] private bool controllerEnabled = false;
+    public bool controllerEnabled = false;
 
     private CharacterController characterController;
 
     private float verticalVelocity;
     private float cameraPitch;
-
+    private bool lastEnabledState;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
 
-        if (playerCamera == null)
-            playerCamera = GetComponentInChildren<Camera>();
+        if (playerCamera == null)playerCamera = GetComponentInChildren<Camera>();
 
         SetControllerEnabled(controllerEnabled);
     }
 
     private void Update()
     {
-        if (!controllerEnabled)
-            return;
+        if (controllerEnabled != lastEnabledState)SetControllerEnabled(controllerEnabled);
+
+        if (!controllerEnabled)return;
 
         HandleMovement();
         HandleLook();
@@ -43,14 +43,11 @@ public class ContractFPSController_sc : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        Vector3 move =
-            transform.right * horizontal +
-            transform.forward * vertical;
+        Vector3 move = transform.right * horizontal +transform.forward * vertical;
 
         move = Vector3.ClampMagnitude(move, 1f);
 
-        if (characterController.isGrounded && verticalVelocity < 0f)
-            verticalVelocity = -2f;
+        if (characterController.isGrounded && verticalVelocity < 0f)verticalVelocity = -2f;
 
         verticalVelocity += gravity * Time.deltaTime;
 
@@ -68,12 +65,7 @@ public class ContractFPSController_sc : MonoBehaviour
         transform.Rotate(Vector3.up * mouseX);
 
         cameraPitch -= mouseY;
-        cameraPitch = Mathf.Clamp(
-            cameraPitch,
-            -maxLookAngle,
-            maxLookAngle
-        );
-
+        cameraPitch = Mathf.Clamp(cameraPitch,-maxLookAngle,maxLookAngle);
         playerCamera.transform.localRotation =
             Quaternion.Euler(cameraPitch, 0f, 0f);
     }
@@ -81,17 +73,10 @@ public class ContractFPSController_sc : MonoBehaviour
     public void SetControllerEnabled(bool enabled)
     {
         controllerEnabled = enabled;
+        lastEnabledState = enabled;
 
-        if (enabled)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
+        Cursor.lockState = enabled ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !enabled;
     }
 
     public bool IsControllerEnabled()
