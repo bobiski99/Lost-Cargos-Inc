@@ -195,6 +195,7 @@ MonoBehaviour:
   discoball: 0
   isOnTable: 0
   CanBeScanned: 0
+  dice: 0
 --- !u!65 &6482914263616730459
 BoxCollider:
   m_ObjectHideFlags: 0

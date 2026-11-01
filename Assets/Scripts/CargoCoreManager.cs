@@ -146,11 +146,7 @@ public class CargoCoreManager : MonoBehaviour
     {
         _scoreTween?.Kill();
 
-        _scoreTween = DOTween.To(
-            () => _currentDisplayedScore,
-            x =>
-            {
-                _currentDisplayedScore = x;
+        _scoreTween = DOTween.To(() => _currentDisplayedScore,  x => {_currentDisplayedScore = x;
                 scoreText.text = _currentDisplayedScore.ToString();
             },
             Score,
