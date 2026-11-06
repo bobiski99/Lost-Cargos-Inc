@@ -71,7 +71,7 @@ public class SpawnManager : MonoBehaviour
 
         // 0-1 Dice %1 | 1-3 Cat %2 | 3-6 Hat %3 | 6-8 Disco %2 | 8-100 Normal %92
         float chance = Random.Range(0f, 100f);
-        if (chance < 1f)
+        if (chance < 100f)
         {
             selectedPrefab = dicePrefab;
         }

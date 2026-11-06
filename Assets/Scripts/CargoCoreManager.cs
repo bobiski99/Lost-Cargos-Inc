@@ -156,6 +156,8 @@ public class CargoCoreManager : MonoBehaviour
 
     public void UpdateScore()
     {
+        if (ToastyCat.Instance != null)
+            ToastyCat.Instance.CheckScore(Score);
         _scoreTween?.Kill();
 
         _scoreTween = DOTween.To(() => _currentDisplayedScore,  x => {_currentDisplayedScore = x;
