@@ -1,23 +1,23 @@
 using UnityEngine;
-using System.Collections;
 
 public class SpawnManager : MonoBehaviour
 {
     public static SpawnManager Instance;
 
     [Header("Varyant Ayarları")]
-    public GameObject[] variants = new GameObject[5]; // 5 farklı prefab
+    public GameObject[] variants = new GameObject[5];
     public Transform[] spawnPoints;
 
     [Header("Zorluk Ayarları")]
-    public float baseSpawnInterval = 2.0f; // Oyun başındaki başlangıç süresi (Örn: 10sn)
-    public float minSpawnInterval = 4.0f;  // İnilebilecek en düşük süre (Limit)
-    public float reductionAmount = 0.3f;   // Her adımda ne kadar azalacak
-    public float reductionStepTime = 5f;  // Kaç saniyede bir zorlaşacak
+    public float baseSpawnInterval = 4.0f;  // Oyun başındaki spawn aralığı (sn)
+    public float minSpawnInterval = 1.0f;   // İnilebilecek en düşük aralık
+    public float reductionAmount = 0.3f;    // Her adımda azalacak miktar
+    public float reductionStepTime = 5f;    // Kaç saniyede bir zorlaşacak
 
-    private float _timer = 0f;
-    private float _nextSpawnTime = 0f;
+    // 1 = başlangıç, aralık düştükçe artar (Rotate bunu okuyor)
+    public float SpeedMultiplier { get; private set; } = 1f;
 
+    private float _spawnCountdown = 0f;
 
     [Header("Special Box Prefabs")]
     public GameObject cat0Cargo;
@@ -30,77 +30,72 @@ public class SpawnManager : MonoBehaviour
     public GameObject discoPrefab;
     public GameObject dicePrefab;
 
+    void Awake()
+    {
+        Instance = this;
+    }
+
     void Update()
     {
-        if (PauseManager.Instance.IsPaused)
-        {
-            return;
-        }
-        _timer = CargoCoreManager.instance.timer;
-        float currentInterval = CalculateCurrentInterval();
+        if (PauseManager.Instance.IsPaused) return;
 
-        if (Time.time >= _nextSpawnTime)
+        float currentInterval = CalculateCurrentInterval();
+        SpeedMultiplier = baseSpawnInterval / currentInterval;
+
+        _spawnCountdown -= Time.deltaTime;
+        if (_spawnCountdown <= 0f)
         {
             SpawnRandomVariant();
-            _nextSpawnTime = Time.time + currentInterval;
+            _spawnCountdown = currentInterval;
         }
     }
 
     float CalculateCurrentInterval()
     {
-        int steps = Mathf.FloorToInt(_timer / reductionStepTime);
-        float calculatedInterval = baseSpawnInterval - (steps * reductionAmount);
+        float timer = CargoCoreManager.instance.timer;
+        int steps = Mathf.FloorToInt(timer / reductionStepTime);
+        float interval = baseSpawnInterval - (steps * reductionAmount);
 
-        return Mathf.Max(calculatedInterval, minSpawnInterval);
+        return Mathf.Max(interval, minSpawnInterval);
     }
+
     void SpawnRandomVariant()
     {
         if (variants == null || variants.Length == 0) return;
 
         Vector3 spawnPos = Vector3.zero;
-
         if (spawnPoints != null && spawnPoints.Length > 0)
-        {
             spawnPos = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
-        }
 
         GameObject selectedPrefab;
 
+        // 0-1 Dice %1 | 1-3 Cat %2 | 3-6 Hat %3 | 6-8 Disco %2 | 8-100 Normal %92
         float chance = Random.Range(0f, 100f);
         if (chance < 1f)
         {
-            // %1 Dice
             selectedPrefab = dicePrefab;
         }
         else if (chance < 3f)
         {
-            // %3 Cat
-            GameObject[] catVariants = { cat0Cargo, cat1Cargo, cat2Cargo, catSealCargo };
-            selectedPrefab = catVariants[Random.Range(0, catVariants.Length)];
+            GameObject[] cats = { cat0Cargo, cat1Cargo, cat2Cargo, catSealCargo };
+            selectedPrefab = cats[Random.Range(0, cats.Length)];
         }
         else if (chance < 6f)
         {
-            // %3 Hat
-            GameObject[] hatvariants = { hatPrefab, hatPrefab0, hatPrefab1 };
-            selectedPrefab = hatvariants[Random.Range(0, hatvariants.Length)];
+            GameObject[] hats = { hatPrefab, hatPrefab0, hatPrefab1 };
+            selectedPrefab = hats[Random.Range(0, hats.Length)];
         }
         else if (chance < 8f)
         {
-            // %2 Disco
             selectedPrefab = discoPrefab;
         }
         else
         {
-            // %92 Normal Box
             selectedPrefab = variants[Random.Range(0, variants.Length)];
         }
 
-        // Chances
-        // 0-1      → Dice %1
-        // 1-4      → Cat %3
-        // 4-7      → Hat %3
-        // 7-8      → Disco %1
-        // 8-100    → Normal Box %92
+        if (selectedPrefab == null) return;
+
         Instantiate(selectedPrefab, spawnPos, Quaternion.identity);
     }
 }
