@@ -66,6 +66,11 @@ public class CargoCoreManager : MonoBehaviour
 
     public void takeDamage(int damage = 1)
     {
+        if (combomanager.Instance != null) 
+        {
+
+            combomanager.Instance.ResetCombo();
+        }
         if (healt == 0) return;
 
         for (int i = 0; i < damage; i++)
@@ -138,7 +143,14 @@ public class CargoCoreManager : MonoBehaviour
 
     public void GivePoint(int point)
     {
-        Score += point;
+        float multiplier = 1f;
+
+        if (combomanager.Instance != null)
+            multiplier = combomanager.Instance.Multiplier;
+
+        int finalPoint = Mathf.RoundToInt(point * multiplier);
+
+        Score += finalPoint;
         UpdateScore();
     }
 

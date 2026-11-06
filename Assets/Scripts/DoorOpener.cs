@@ -27,20 +27,25 @@ public class DoorOpener : MonoBehaviour
         return dangerButton != null && dangerButton.dangerOpen;
     }
 
-    public void TryBox(int _color, int _number, bool _danger = false)
+    public bool TryBox(int _color, int _number, bool _danger = false)
     {
         if (_danger)
         {
-            return;
+            return false;
         }
 
         if (_color != color || _number != number)
         {
             CargoCoreManager.instance.takeDamage(1);
-            return;
+            return false;
         }
 
+        if (combomanager.Instance != null)
+            combomanager.Instance.RegisterSuccessfulDelivery();
+
         CargoCoreManager.instance.GivePoint(31);
+
+        return true;
     }
     public void OpenDoor()
     {
