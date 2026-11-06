@@ -141,6 +141,7 @@ public class Hold : MonoBehaviour
             {
                 CursorManager.Instance.SetGrab();
                 clickObject_Moving = true;
+                transform.SetParent(null, true);
                 transform.DOKill();
 
                 transform.DORotate(hatTarget.eulerAngles, 1f);
@@ -172,6 +173,7 @@ public class Hold : MonoBehaviour
             {
                 CursorManager.Instance.SetGrab();
                 clickObject_Moving = true;
+                transform.SetParent(null, true);
                 transform.DOMoveY(10.93f, 0.5f).SetEase(Ease.OutBack);
                 CargoCoreManager.instance.GivePoint(15);
                 disco.discotime();

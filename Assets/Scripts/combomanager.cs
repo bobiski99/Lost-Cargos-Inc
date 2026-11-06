@@ -78,7 +78,7 @@ public class combomanager : MonoBehaviour
 
         comboText.gameObject.SetActive(true);
 
-        comboText.text = "COMBO  x" +
+        comboText.text = "COMBO x" +
             Multiplier.ToString("0.0", CultureInfo.InvariantCulture);
 
         comboText.transform.localScale = Vector3.zero;
