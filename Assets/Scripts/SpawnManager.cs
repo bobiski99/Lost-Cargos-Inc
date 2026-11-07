@@ -3,12 +3,8 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     public static SpawnManager Instance;
-
-    [Header("Varyant Ayarları")]
     public GameObject[] variants = new GameObject[5];
     public Transform[] spawnPoints;
-
-    [Header("Zorluk Ayarları")]
     public float baseSpawnInterval = 4.0f;  // Oyun başındaki spawn aralığı (sn)
     public float minSpawnInterval = 1.0f;   // İnilebilecek en düşük aralık
     public float reductionAmount = 0.3f;    // Her adımda azalacak miktar
@@ -71,7 +67,7 @@ public class SpawnManager : MonoBehaviour
 
         // 0-1 Dice %1 | 1-3 Cat %2 | 3-6 Hat %3 | 6-8 Disco %2 | 8-100 Normal %92
         float chance = Random.Range(0f, 100f);
-        if (chance < 100f)
+        if (chance < 1f)
         {
             selectedPrefab = dicePrefab;
         }

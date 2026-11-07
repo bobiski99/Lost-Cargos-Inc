@@ -4,12 +4,9 @@ using UnityEngine.UI;
 public class CursorManager : MonoBehaviour
 {
     public static CursorManager Instance;
-
     [SerializeField] private Image cursorImage;
-
     [SerializeField] private Sprite normalCursor;
     [SerializeField] private Sprite grabCursor;
-
     private RectTransform rect;
 
     private void Awake()

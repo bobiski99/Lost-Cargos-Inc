@@ -8,21 +8,18 @@ public class DoorOpener : MonoBehaviour
     [SerializeField] private DangerDoorButton dangerButton;
     public bool state = true;
     public float ok1,ok2, ck1, ck2;
-
-
     public Transform kapi1, kapi2;
-
     [SerializeField] private int color, number;
-
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip openSound;
     [SerializeField] private AudioClip closeSound;
     [Range(0.1f, 0.5f)][SerializeField] private float pitchRandomness = 0.2f;
-
     public bool CanAcceptBox()
     {
         if (!isDangerDoor)
+        {
             return true;
+        }
 
         return dangerButton != null && dangerButton.dangerOpen;
     }
@@ -31,20 +28,18 @@ public class DoorOpener : MonoBehaviour
     {
         if (_danger)
         {
+            CargoCoreManager.instance.takeDamage(2,"WRONG PLACE FOR DANGEROUS BOX!");
             return false;
         }
 
         if (_color != color || _number != number)
         {
-            CargoCoreManager.instance.takeDamage(1);
+            CargoCoreManager.instance.takeDamage(1,"YOU MIXED UP THE COLOURS!");
             return false;
         }
 
-        if (combomanager.Instance != null)
-            combomanager.Instance.RegisterSuccessfulDelivery();
-
+        if (combomanager.Instance != null)combomanager.Instance.RegisterSuccessfulDelivery();
         CargoCoreManager.instance.GivePoint(31);
-
         return true;
     }
     public void OpenDoor()
@@ -72,7 +67,6 @@ public class DoorOpener : MonoBehaviour
         if (audioSource != null && clip != null)
         {
             audioSource.pitch = Random.Range(1f - pitchRandomness, 1f + pitchRandomness);
-
             audioSource.PlayOneShot(clip);
         }
     }

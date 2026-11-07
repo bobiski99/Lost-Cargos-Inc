@@ -7,17 +7,13 @@ public class burning_light : MonoBehaviour
 {
     [SerializeField] private Light pointLight;
     private Light _light;
-
     private Coroutine routine;
     public float minIntensity = 0.7f;
     public float maxIntensity = 1.3f;
-
     private float defaultMin;
     private float defaultMax;
-
     public float minDuration = 0.05f;
     public float maxDuration = 0.2f;
-
     void Start()
     {
         defaultMax = maxIntensity;
@@ -52,9 +48,7 @@ public class burning_light : MonoBehaviour
         
         float targetIntensity = Random.Range(minIntensity, maxIntensity);
         float duration = Random.Range(minDuration, maxDuration);
-        _light.DOIntensity(targetIntensity, duration)
-            .SetEase(Ease.InOutSine)
-            .OnComplete(Flicker);
+        _light.DOIntensity(targetIntensity, duration).SetEase(Ease.InOutSine).OnComplete(Flicker);
     }
 
     private void OnDestroy()

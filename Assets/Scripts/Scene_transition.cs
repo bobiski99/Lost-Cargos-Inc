@@ -3,7 +3,6 @@ using UnityEngine.SceneManagement;
 public class SceneTransition : MonoBehaviour
 {
     [SerializeField] private ContractFPSController_sc controller_off;
-    [Header("Scene Settings")]
     public string sceneToLoad;
     
 

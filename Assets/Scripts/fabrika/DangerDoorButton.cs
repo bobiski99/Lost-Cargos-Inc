@@ -19,13 +19,14 @@ public class DangerDoorButton : MonoBehaviour
     {
         
         if (isAnimating)
+        {
             return;
+
+        }
         
         isAnimating = true;
 
         Sequence seq = DOTween.Sequence();
-
-        // Button animation
         seq.Append(dontbuton.DOLocalMoveY(0.267f, 0.1f).SetEase(Ease.OutQuad));
         seq.Append(dontbuton.DOLocalMoveY(0.3f, 0.3f).SetEase(Ease.OutBounce));
 

@@ -4,28 +4,18 @@ using UnityEngine;
 
 public class ScannerScreen : MonoBehaviour
 {
-    [Header("Material")]
     [SerializeField] private Renderer targetRenderer;
     [SerializeField] private int materialIndex = 1;
-
-    [Header("Textures")]
     public Texture readyTexture;
     public Texture[] scanningTextures;
     public Texture cleanTexture;
     public Texture dangerTexture;
-
-    [Header("Emission")]
     public Color normalEmission = Color.white;
     public Color dangerEmission = Color.red;
-
     public float emissionIntensity = 3f;
-
     private Material mat;
     private Coroutine scanRoutine;
-
     [SerializeField] private Transform xrayGrid;
-
-
     void Awake()
     {
         mat = targetRenderer.materials[materialIndex];
@@ -62,11 +52,8 @@ public class ScannerScreen : MonoBehaviour
     IEnumerator ScanRoutine(Box box)
     {
         xrayGrid.DOKill();
-
         Sequence gridSeq = DOTween.Sequence();
-
         gridSeq.Append(xrayGrid.DOLocalMoveY(0.005f, 0.5f).SetEase(Ease.Linear));
-
         gridSeq.Append(xrayGrid.DOLocalMoveY(-0.92f, 0.5f).SetEase(Ease.Linear));
         float timer = 0;
         while (timer < 1f)
@@ -74,9 +61,7 @@ public class ScannerScreen : MonoBehaviour
             foreach (Texture tex in scanningTextures)
             {
                 SetTexture(tex, normalEmission, 2f);
-
                 yield return new WaitForSeconds(0.25f);
-
                 timer += 0.25f;
 
                 if (timer >= 1f)

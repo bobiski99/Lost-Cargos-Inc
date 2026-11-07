@@ -7,10 +7,7 @@ public class discoball_sc : MonoBehaviour
     [SerializeField] private Light[] lights;
     [SerializeField] private AudioClip disco_music;
     [SerializeField] private RadioVisualizer radio;
-
     private AudioSource musicSource;
-
-
     private Tween currentTween;
     private void Awake()
     {

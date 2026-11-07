@@ -3,8 +3,6 @@ using UnityEngine;
 public class Rotate : MonoBehaviour
 {
     public Vector3 rotationAxis;
-
-    [Header("Spawn H?z?na Göre H?zlanma")]
     [Range(0f, 1f)] public float influence = 0.3f; // 0 = etkilenmez, 1 = spawn çarpan? kadar
     public float maxMultiplier = 2f;               // üst limit
     public float smoothing = 2f;                   // ne kadar yumu?ak geçsin (büyük = h?zl? geçi?)

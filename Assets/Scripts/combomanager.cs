@@ -7,36 +7,27 @@ using System.Globalization;
 public class combomanager : MonoBehaviour
 {
     public static combomanager Instance;
-
-    [Header("Combo Settings")]
     [SerializeField] private int comboStartCount = 3;
     [SerializeField] private float multiplierStep = 0.1f;
-
-    [Header("Text")]
     [SerializeField] private TMP_Text comboText;
     [SerializeField] private float animationDuration = 0.25f;
-
-    [Header("Rotation Effect")]
     [SerializeField] private float baseRotationSpeed = 0.65f;
     [SerializeField] private float rotationSpeedIncrease = 0.10f;
     [SerializeField] private float baseRotationAngle = 1f;
     [SerializeField] private float rotationAngleIncrease = 3f;
-
-    [Header("Rainbow Effect")]
     [SerializeField] private float rainbowSpeed = 1.2f;
-
-    public int SuccessfulDrops { get; private set; }
+    public int SuccessfulDrops 
+    {
+        get; 
+        private set; 
+    }
     public float Multiplier { get; private set; } = 1f;
-
     private Tween rotationTween;
     private Tween rainbowTween;
     private Tween scaleTween;
-
     private Vector3 originalScale;
     private Quaternion originalRotation;
-
     private float rainbowHue;
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -52,6 +43,8 @@ public class combomanager : MonoBehaviour
             originalScale = comboText.transform.localScale;
             originalRotation = comboText.transform.localRotation;
 
+
+
             comboText.gameObject.SetActive(false);
         }
     }
@@ -62,40 +55,44 @@ public class combomanager : MonoBehaviour
 
 
         if (SuccessfulDrops < comboStartCount)
+        {
             return;
+        }
 
-        Multiplier = 1f +
-            (SuccessfulDrops - comboStartCount + 1) * multiplierStep;
+        Multiplier = 1f +(SuccessfulDrops - comboStartCount + 1) * multiplierStep;
 
         ShowCombo();
     }
 
     private void ShowCombo()
     {
-        if (comboText == null) return;
-
+        if (comboText == null) 
+        {
+            return;
+        } 
         KillAnimations();
 
         comboText.gameObject.SetActive(true);
 
-        comboText.text = "COMBO x" +
-            Multiplier.ToString("0.0", CultureInfo.InvariantCulture);
+        comboText.text = "COMBO x"+Multiplier.ToString("0.0", CultureInfo.InvariantCulture);
+
+
+
+
+
+
+
+
+
 
         comboText.transform.localScale = Vector3.zero;
         comboText.transform.localRotation = originalRotation;
 
         UpdateComboColor();
         StartRotationEffect();
-
-        // Giri? animasyonu
-        scaleTween = comboText.transform
-            .DOScale(originalScale * 1.5f, animationDuration)
-            .SetEase(Ease.OutBack)
-            .OnComplete(() =>
+        scaleTween = comboText.transform.DOScale(originalScale * 1.5f, animationDuration).SetEase(Ease.OutBack).OnComplete(() =>
             {
-                scaleTween = comboText.transform
-                    .DOScale(originalScale, 0.2f)
-                    .SetEase(Ease.OutElastic);
+                scaleTween = comboText.transform.DOScale(originalScale, 0.2f).SetEase(Ease.OutElastic);
             });
     }
 
@@ -107,7 +104,6 @@ public class combomanager : MonoBehaviour
         rainbowTween = null;
 
         float colorStage = Mathf.Floor((Multiplier - 1.1f) / 0.5f);
-
         if (Multiplier < 1.5f)
         {
             comboText.color = new Color(0.15f, 0.55f, 1f);
@@ -138,56 +134,32 @@ public class combomanager : MonoBehaviour
     {
         rainbowHue = 0f;
 
-        rainbowTween = DOTween.To(
-            () => rainbowHue,
-            x =>
+        rainbowTween = DOTween.To(() => rainbowHue,x =>
             {
                 rainbowHue = x;
                 comboText.color = Color.HSVToRGB(x, 0.9f, 1f);
-            },
-            1f,
-            rainbowSpeed
-        )
-        .SetEase(Ease.Linear)
-        .SetLoops(-1, LoopType.Restart);
+            }
+            ,1f,rainbowSpeed).SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart);
     }
 
     private void StartRotationEffect()
     {
-        float stage = Mathf.Max(
-            0f,
-            Mathf.Floor((Multiplier - 1.1f) / 0.5f)
-        );
-
-        // Her 0.5 çarpanda dönü? h?zlan?r.
-        float rotationDuration = Mathf.Max(
-            0.12f,
-            baseRotationSpeed - stage * rotationSpeedIncrease
-        );
-
-        // Her a?amada daha geni? aç?yla döner.
-        float rotationAngle = baseRotationAngle +
-            stage * rotationAngleIncrease;
+        float stage = Mathf.Max(0f,Mathf.Floor((Multiplier - 1.1f) / 0.5f));
+        float rotationDuration = Mathf.Max(0.12f,baseRotationSpeed - stage * rotationSpeedIncrease);
+        float rotationAngle = baseRotationAngle +stage * rotationAngleIncrease;
 
         float originalZ = originalRotation.eulerAngles.z;
 
-        rotationTween = comboText.transform
-            .DOLocalRotate(
-                new Vector3(
-                    originalRotation.eulerAngles.x,
-                    originalRotation.eulerAngles.y,
-                    originalZ + rotationAngle
-                ),
-                rotationDuration
-            )
-            .SetEase(Ease.InOutSine)
-            .SetLoops(-1, LoopType.Yoyo);
+        rotationTween = comboText.transform.DOLocalRotate(new Vector3(originalRotation.eulerAngles.x,originalRotation.eulerAngles.y,originalZ + rotationAngle)
+            ,rotationDuration).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
     }
 
     public void ResetCombo()
     {
         if (SuccessfulDrops == 0)
+        {
             return;
+        }
 
         bool hadCombo = SuccessfulDrops >= comboStartCount;
 
@@ -195,7 +167,9 @@ public class combomanager : MonoBehaviour
         Multiplier = 1f;
 
         if (!hadCombo || comboText == null)
+        {
             return;
+        }
 
         KillAnimations();
 
@@ -204,13 +178,9 @@ public class combomanager : MonoBehaviour
 
         comboText.transform.localRotation = originalRotation;
 
-        scaleTween = comboText.transform
-            .DOScale(Vector3.zero, 1f)
-            .SetEase(Ease.InBack)
-            .OnComplete(() =>
+        scaleTween = comboText.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InBack).OnComplete(() =>
             {
                 comboText.gameObject.SetActive(false);
-
                 comboText.transform.localScale = originalScale;
                 comboText.transform.localRotation = originalRotation;
             });
@@ -223,7 +193,10 @@ public class combomanager : MonoBehaviour
         scaleTween?.Kill();
 
         if (comboText != null)
+        {
+
             comboText.transform.DOKill();
+        }
     }
 
     private void OnDestroy()
@@ -231,6 +204,8 @@ public class combomanager : MonoBehaviour
         KillAnimations();
 
         if (Instance == this)
+        {
             Instance = null;
+        }
     }
 }

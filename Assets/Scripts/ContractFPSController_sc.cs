@@ -2,20 +2,13 @@ using UnityEngine;
 
 public class ContractFPSController_sc : MonoBehaviour
 {
-    [Header("Movement")]
     [SerializeField] private float moveSpeed = 4f;
     [SerializeField] private float gravity = -20f;
-
-    [Header("Look")]
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float mouseSensitivity = 2f;
     [SerializeField] private float maxLookAngle = 85f;
-
-    [Header("Control")]
     public bool controllerEnabled = false;
-
     private CharacterController characterController;
-
     private float verticalVelocity;
     private float cameraPitch;
     private bool lastEnabledState;
@@ -23,17 +16,24 @@ public class ContractFPSController_sc : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
 
-        if (playerCamera == null)playerCamera = GetComponentInChildren<Camera>();
-
+        if (playerCamera == null)
+        {
+            playerCamera = GetComponentInChildren<Camera>();
+        }
         SetControllerEnabled(controllerEnabled);
     }
 
     private void Update()
     {
-        if (controllerEnabled != lastEnabledState)SetControllerEnabled(controllerEnabled);
+        if (controllerEnabled != lastEnabledState)
+        {
+            SetControllerEnabled(controllerEnabled);
+        }
 
-        if (!controllerEnabled)return;
-
+        if (!controllerEnabled)
+        {
+            return;
+        }
         HandleMovement();
         HandleLook();
     }
@@ -66,8 +66,7 @@ public class ContractFPSController_sc : MonoBehaviour
 
         cameraPitch -= mouseY;
         cameraPitch = Mathf.Clamp(cameraPitch,-maxLookAngle,maxLookAngle);
-        playerCamera.transform.localRotation =
-            Quaternion.Euler(cameraPitch, 0f, 0f);
+        playerCamera.transform.localRotation =Quaternion.Euler(cameraPitch, 0f, 0f);
     }
 
     public void SetControllerEnabled(bool enabled)

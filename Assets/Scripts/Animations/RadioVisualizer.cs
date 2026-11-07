@@ -29,20 +29,12 @@ public class RadioVisualizer : MonoBehaviour
         intensity = Mathf.Clamp(intensity, 0f, 1f);
 
         Vector3 targetScale = originalScale * (1f + intensity);
-        visualTarget.localScale = Vector3.Lerp(
-            visualTarget.localScale,
-            targetScale,
-            Time.deltaTime * lerpSpeed
-        );
+        visualTarget.localScale = Vector3.Lerp(visualTarget.localScale,targetScale,Time.deltaTime * lerpSpeed);
 
         float yOffset = (visualTarget.localScale.y - originalScale.y) * 0.5f;
         Vector3 newPos = originalPosition + Vector3.up * yOffset;
 
-        visualTarget.localPosition = Vector3.Lerp(
-            visualTarget.localPosition,
-            newPos,
-            Time.deltaTime * lerpSpeed
-        );
+        visualTarget.localPosition = Vector3.Lerp(visualTarget.localPosition,  newPos,Time.deltaTime * lerpSpeed);
     }
     void OnMouseDown()
     {

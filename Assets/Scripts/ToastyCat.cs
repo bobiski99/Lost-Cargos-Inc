@@ -8,16 +8,12 @@ public class ToastyCat : MonoBehaviour
     [SerializeField] private Transform cat;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip toastyClip;
-
-    [Header("Ayarlar")]
     [SerializeField] private int scoreThreshold = 500;
     [SerializeField] private bool repeatEveryThreshold = false;
-
-    [Header("Y Pozisyonlar?")]
     [SerializeField] private float hiddenY = -1.44f;
     [SerializeField] private float shownY = 1.159f;
     [SerializeField] private float slideTime = 0.3f;
-    [SerializeField] private float stayTime = 2f; // ekranda kalma süresi
+    [SerializeField] private float stayTime = 2f;
 
     private int _nextThreshold;
     private bool _playing;
@@ -31,7 +27,7 @@ public class ToastyCat : MonoBehaviour
         {
             Vector3 p = cat.position;
             p.y = hiddenY;
-            cat.position = p; // ba?lang?çta gizli konuma al
+            cat.position = p;
         }
     }
 
@@ -40,6 +36,13 @@ public class ToastyCat : MonoBehaviour
         if (_playing || score < _nextThreshold) return;
 
         _nextThreshold = repeatEveryThreshold ? _nextThreshold + scoreThreshold : int.MaxValue;
+
+
+
+
+
+
+
         Play();
     }
 
@@ -48,13 +51,12 @@ public class ToastyCat : MonoBehaviour
         _playing = true;
 
         if (audioSource != null && toastyClip != null)
+        {
+
             audioSource.PlayOneShot(toastyClip);
+        }
 
         cat.DOKill();
-        DOTween.Sequence()
-            .Append(cat.DOMoveY(shownY, slideTime))
-            .AppendInterval(stayTime)
-            .Append(cat.DOMoveY(hiddenY, slideTime))
-            .OnComplete(() => _playing = false);
+        DOTween.Sequence().Append(cat.DOMoveY(shownY, slideTime)).AppendInterval(stayTime).Append(cat.DOMoveY(hiddenY, slideTime)).OnComplete(() => _playing = false);
     }
 }

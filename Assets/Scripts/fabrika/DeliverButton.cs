@@ -4,7 +4,6 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class DeliverButton : MonoBehaviour
 {
-    [Header("Transform Settings")]
     [SerializeField] private Vector3 _targetPosition;
     [SerializeField] private Vector3 _targetRotation;
     [SerializeField] private Vector3 _targetPosition1;
@@ -13,20 +12,21 @@ public class DeliverButton : MonoBehaviour
     [SerializeField] private float _animationDuration = 1.5f;
     [SerializeField] private DangerDoorButton dangerDoorButton;
     [SerializeField] private burning_light lightController;
-
     [SerializeField] private Collider _targetCollider;
-
     public void Awake()
     {
         if (_targetCollider != null)
+        {
             _targetCollider.enabled = false;
+        }
     }
 
     public void ActivateObject()
     {
         if (_targetCollider != null)
+        {
             _targetCollider.enabled = true;
-
+        }
         transform.DOMove(_targetPosition, _animationDuration).SetEase(Ease.OutElastic);
         transform.DORotate(_targetRotation, _animationDuration).SetEase(Ease.OutElastic);
     }
@@ -42,8 +42,6 @@ public class DeliverButton : MonoBehaviour
         {
             _targetCollider.enabled = false;
         }
-
-
         CargoCoreManager.instance.GivePoint(100);
         CargoCoreManager.instance.Heal();
         lightController.TurnOnForSeconds(3f);

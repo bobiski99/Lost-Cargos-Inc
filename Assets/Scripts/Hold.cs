@@ -7,7 +7,6 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Hold : MonoBehaviour
 {
-    [Header("Ayarlar")]
     public float YHeight = .5f;
     public float moveSpeed = 15f;
     public Vector3 holdRot;
@@ -56,7 +55,10 @@ public class Hold : MonoBehaviour
             catStartX = catObject.position.x;
         }
         hatTarget = GameObject.FindGameObjectWithTag("HatTarget").transform;
-        if (StarterPoint == Vector3.zero) StarterPoint = transform.position;
+        if (StarterPoint == Vector3.zero)
+        {
+            StarterPoint = transform.position;
+        }
         StarterRot = transform.eulerAngles;
         cam = Camera.main;
         startScale = transform.localScale;
@@ -108,7 +110,6 @@ public class Hold : MonoBehaviour
         }
         if (DiceManager.Instance != null && DiceManager.Instance.IsDiceEvent)
         {
-
             return;
         }
         rotateTween?.Kill();
@@ -153,7 +154,7 @@ public class Hold : MonoBehaviour
                     transform.DOKill();
                     if (gameObject.name.StartsWith("hat_cargo0"))
                     {
-                        Debug.Log("cuğara buraya");
+                        Debug.Log("cugara buraya");
                     }
                     DOVirtual.DelayedCall(3f, () =>
                     {
@@ -189,7 +190,10 @@ public class Hold : MonoBehaviour
             holded = true;
             CursorManager.Instance.SetGrab();
             if (Vector3.Distance(transform.position, StarterPoint) > 0.02f)
+            {
                 return;
+
+            }
             transform.DOKill();
             transform.GetComponent<OutlineController>().IsOutlineActive = false;
             transform.DORotate(holdRot, 0.6f).SetEase(Ease.OutBack);
@@ -202,17 +206,16 @@ public class Hold : MonoBehaviour
     {
         transform.DOLocalMoveY(0.00542f, 0.2f);
 
-        DOVirtual.DelayedCall(3f, () =>
-        {
-            transform.DOLocalMoveY(0.0082f, 0.2f);
-        });
+        DOVirtual.DelayedCall(3f, () => transform.DOLocalMoveY(0.0082f, 0.2f));
     }
     void OnMouseUp()
     {
-        if (PauseManager.Instance.IsPaused)
+        if (PauseManager.Instance.IsPaused) 
+        {
             return;
-        if (DiceManager.Instance != null && DiceManager.Instance.IsDiceEvent)
-            return;
+        }
+        if (DiceManager.Instance != null && DiceManager.Instance.IsDiceEvent) 
+        {return;}
         holded = false;
         CursorManager.Instance.SetNormal();
         scanner_holding = false;
@@ -250,19 +253,13 @@ public class Hold : MonoBehaviour
             }
 
 
-            //buraya bak
+            //buraya bakmayu unutma
             if (pivot.CompareTag("dangerpivot") && dangerDoorButton.dangerOpen)
             {
                 dont = true;
 
-                transform.DOScale(new Vector3(-0.2f, -0.2f, -0.2f), 0.2f)
-                    .SetRelative(true)
-                    .SetEase(Ease.OutBack);
-
-                transform.DOMoveY(-10, 0.5f)
-                    .SetRelative(true)
-                    .SetEase(Ease.InBack)
-                    .OnComplete(() =>
+                transform.DOScale(new Vector3(-0.2f, -0.2f, -0.2f), 0.2f).SetRelative(true).SetEase(Ease.OutBack);
+                transform.DOMoveY(-10, 0.5f).SetRelative(true).SetEase(Ease.InBack).OnComplete(() =>
                     {
                         if (bx.Danger)
                         {
@@ -272,8 +269,7 @@ public class Hold : MonoBehaviour
                         }
                         else
                         {
-                            // Normal kutu danger kapıya
-                            CargoCoreManager.instance.takeDamage(1);
+                            CargoCoreManager.instance.takeDamage(1,"THAT BOX WAS INNOCENT! :(");
                         }
 
                         dangerDoorButton.toggle_case();
@@ -293,11 +289,7 @@ public class Hold : MonoBehaviour
                 {
                     eskiKapi.TryBox(bx.color, bx.number, bx.Danger);
 
-                    if (bx.Danger)
-                    {
-                        // Danger kutu normal kapıya gitti
-                        CargoCoreManager.instance.takeDamage(2);
-                    }
+                    
 
                     eskiKapi.OpenDoor();
 
@@ -449,8 +441,10 @@ public class Hold : MonoBehaviour
                             pvt = col;
                             target = col.transform.position;
 
-                            if ((transform.position - target).magnitude > 0.1f)
+                            if ((transform.position - target).magnitude > 0.1f) 
+                            {
                                 transform.DORotate(StarterRot, 0.2f).SetEase(Ease.OutBack);
+                            }
 
                             break;
                         }
@@ -498,7 +492,6 @@ public class Hold : MonoBehaviour
 
                 if (yeniHedef != pivot)
                 {
-                    // Xray'den çıktıysak taramayı durdur
                     if (pivot != null && pivot.CompareTag("xray") && (yeniHedef == null || !yeniHedef.CompareTag("xray")))
                     {
                         scanning = false;

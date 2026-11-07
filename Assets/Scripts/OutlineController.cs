@@ -3,14 +3,9 @@ using UnityEngine;
 
 public class OutlineController : MonoBehaviour
 {
-    [Header("Visual Settings")]
     [SerializeField] private Material outlineMaterial;
-
     private readonly List<GameObject> outlineObjects = new();
-
-    [Header("Control")]
     [SerializeField] private bool _isOutlineActive;
-
     public bool IsOutlineActive
     {
         get => _isOutlineActive;
@@ -41,10 +36,14 @@ public class OutlineController : MonoBehaviour
         {
             MeshFilter mf = rend.GetComponent<MeshFilter>();
             if (mf == null || mf.sharedMesh == null)
+            {
                 continue;
+            }
 
             if (rend.transform.Find("OutlineObject") != null)
+            {
                 continue;
+            }
 
             GameObject outline = new GameObject("OutlineObject");
             outline.transform.SetParent(rend.transform, false);

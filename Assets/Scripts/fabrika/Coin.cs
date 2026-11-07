@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class Coin : MonoBehaviour
 {
     Vector3 oldPos;
-
     [SerializeField] TMP_Text _text;
     [SerializeField] Slider slider;
     [SerializeField] float scratingDis = 0.3f;
@@ -15,7 +14,9 @@ public class Coin : MonoBehaviour
     void Update()
     {
         if (PauseManager.Instance.IsPaused)
+        {
             return;
+        }
         if (boxPoint.childCount == 0)
         {
             slider.gameObject.SetActive(false);
@@ -45,10 +46,11 @@ public class Coin : MonoBehaviour
             _var = 0; return; 
         }
 
-        if ((transform.position - oldPos).magnitude >= scratingDis) _var += 1f * Time.deltaTime;
-
+        if ((transform.position - oldPos).magnitude >= scratingDis)
+        {
+            _var += 1f * Time.deltaTime;
+        }
         slider.value = _var;
-
         oldPos = transform.position;
     }
 }

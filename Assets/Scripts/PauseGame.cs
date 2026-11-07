@@ -5,21 +5,14 @@ using UnityEngine;
 public class PauseManager : MonoBehaviour
 {
     public static PauseManager Instance;
-
-    [Header("UI")]
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private TMP_Text pauseTitle;
-
-    [Header("Audio")]
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource ambienceSource;
     [SerializeField] private AudioSource sfxSource;
-
     [SerializeField] private AudioClip pauseSound;
     [SerializeField] private AudioClip resumeSound;
-
     [SerializeField] private float fadeDuration = .35f;
-
     public bool IsPaused { get; private set; }
 
     private Tween blinkTween;
@@ -28,8 +21,10 @@ public class PauseManager : MonoBehaviour
     public bool CanPause { get; set; } = true;
     private void Awake()
     {
-        if (Instance == null)
+        if (Instance == null) 
+        {
             Instance = this;
+        }
         else
         {
             Destroy(gameObject);
@@ -39,13 +34,18 @@ public class PauseManager : MonoBehaviour
         pausePanel.SetActive(false);
 
         if (sfxSource != null)
+        {
             sfxSource.ignoreListenerPause = true;
+
+        }
     }
 
     private void Update()
     {
         if (!CanPause)
+        {
             return;
+        }
 
        
         if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
@@ -78,14 +78,14 @@ public class PauseManager : MonoBehaviour
         if (pauseTitle != null)
         {
             pauseTitle.alpha = 1f;
-
             blinkTween?.Kill();
-
             blinkTween = pauseTitle.DOFade(.2f, .6f).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
         }
 
         if (pauseSound != null)
+        {
             sfxSource.PlayOneShot(pauseSound);
+        }
 
         FadeOutAndPause(musicSource);
         FadeOutAndPause(ambienceSource);
@@ -99,12 +99,8 @@ public class PauseManager : MonoBehaviour
         {
             return;
         }
-            
-
         IsPaused = false;
-
         blinkTween?.Kill();
-
         if (pauseTitle != null)
         {
             pauseTitle.alpha = 1f;
@@ -114,9 +110,7 @@ public class PauseManager : MonoBehaviour
         if (resumeSound != null)
         {
             sfxSource.PlayOneShot(resumeSound);
-        }
-            
-
+        }        
         Time.timeScale = 1f;
 
         ResumeWithFade(musicSource);

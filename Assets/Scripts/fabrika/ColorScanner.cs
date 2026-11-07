@@ -3,17 +3,13 @@ using DG.Tweening;
 
 public class ColorScanner : MonoBehaviour
 {
-    [Header("Settings")]
     [SerializeField] private Transform _rayOrigin;
     [SerializeField] private float _rayDistance = 10f;
     [SerializeField] private float _emissionIntensity = 3f;
-    [SerializeField] private float _scanRadius = 1.5f;
-    
+    [SerializeField] private float _scanRadius = 1.5f;    
     private Material _targetSlotMaterial;
     private bool _isProcessing = false;
-    private bool holding_scanner = false;
-
-   
+    private bool holding_scanner = false;   
     void Awake()
     {
 
@@ -23,16 +19,13 @@ public class ColorScanner : MonoBehaviour
         {
             Material[] mats = rend.materials;
             _targetSlotMaterial = mats[1];
-
             _targetSlotMaterial.EnableKeyword("_EMISSION");
-
             _targetSlotMaterial.SetColor("_EmissionColor", Color.black);
-
             rend.materials = mats;
         }
         else
         {
-            Debug.LogError("Renderer or slot is missing");
+            Debug.LogError("renderer or slot is missing");
         }
     }
 
@@ -41,8 +34,7 @@ public class ColorScanner : MonoBehaviour
         if (PauseManager.Instance.IsPaused)
         {
             return;
-        }
-            
+        }            
         ScanForBox();
     }
 
@@ -51,9 +43,7 @@ public class ColorScanner : MonoBehaviour
         if (_isProcessing || _targetSlotMaterial == null || !holding_scanner)
         {
             return;
-        }
-            
-
+        }          
         Collider[] hits = Physics.OverlapSphere(_rayOrigin.position, _scanRadius);
 
         foreach (Collider hit in hits)
@@ -87,14 +77,8 @@ public class ColorScanner : MonoBehaviour
             
 
         Gizmos.color = Color.cyan;
-
-        Gizmos.DrawLine(
-            _rayOrigin.position,
-            _rayOrigin.position + (-_rayOrigin.up * _rayDistance));
-
-        Gizmos.DrawWireSphere(
-            _rayOrigin.position + (-_rayOrigin.up * _rayDistance),
-            _scanRadius);
+        Gizmos.DrawLine(_rayOrigin.position,_rayOrigin.position + (-_rayOrigin.up * _rayDistance));
+        Gizmos.DrawWireSphere(_rayOrigin.position + (-_rayOrigin.up * _rayDistance),_scanRadius);
     }
     private void ApplyEmissionEffect(int colorCode)
     {
@@ -102,22 +86,13 @@ public class ColorScanner : MonoBehaviour
         {
             Color targetColor = GetColorFromInt(colorCode) * _emissionIntensity;
             _isProcessing = true;
-
             DOTween.Kill(_targetSlotMaterial);
-
             Sequence emissionSeq = DOTween.Sequence().SetId(_targetSlotMaterial);
-
             emissionSeq.Append(_targetSlotMaterial.DOColor(targetColor, "_EmissionColor", 0.3f).SetLoops(2, LoopType.Yoyo));
-
             emissionSeq.Append(_targetSlotMaterial.DOColor(targetColor, "_EmissionColor", 0.2f));
-
             emissionSeq.AppendInterval(2.0f);
-
             emissionSeq.Append(_targetSlotMaterial.DOColor(Color.black, "_EmissionColor", 0.5f));
-
-            emissionSeq.OnComplete(() => {
-                _isProcessing = false;
-            });
+            emissionSeq.OnComplete(() => {_isProcessing = false;});
         }
         
     }

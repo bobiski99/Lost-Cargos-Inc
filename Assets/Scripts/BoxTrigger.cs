@@ -5,7 +5,6 @@ public class BoxTrigger : MonoBehaviour
     [SerializeField] private Transform boxPos;
     [SerializeField] private BoxCollider col;
     public bool isOnTable;
-
     private void Start()
     {
         col = GetComponent<BoxCollider>();
