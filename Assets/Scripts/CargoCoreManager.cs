@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public class CargoCoreManager : MonoBehaviour
@@ -23,7 +24,7 @@ public class CargoCoreManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     private int _currentDisplayedScore = 0;
     private Tween _scoreTween;
-
+    public GameObject restartButton;
     private Tween healthBlinkTween;
     [SerializeField] private TMP_Text damageReasonText;
     [SerializeField] private int blinkCount = 4;
@@ -44,27 +45,22 @@ public class CargoCoreManager : MonoBehaviour
 
             instance = this;
         }
+        Screen.SetResolution(1920, 1080, FullScreenMode.Windowed);
     }
-
     private void Start()
     {
-        if (SceneTransitions.Instance != null)
-        {
-            Score = SceneTransitions.Instance.scoreData;
-            timer = SceneTransitions.Instance.timeData;
-        }
-        else
-        {
-            Score = 0;
-            timer = 0;
-        }
+        
         if (damageReasonText != null)
         {
             damageReasonText.alpha = 0f;
         }
         UpdateScore();
     }
-
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
     private void Update()
     {
 
@@ -145,6 +141,7 @@ public class CargoCoreManager : MonoBehaviour
         {
             PauseManager.Instance.PauseGame();
             Debug.Log("GAME OVER - Score: " + Score);
+            restartButton.SetActive(true);
         }
     }
 

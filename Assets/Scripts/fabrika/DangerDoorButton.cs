@@ -11,22 +11,32 @@ public class DangerDoorButton : MonoBehaviour
     public bool waitingForDeliver = false;
     public bool dangerOpen = false;
     private bool isAnimating = false;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip doorSound;
+    [SerializeField] private AudioClip doorCloseSound;
     void Start()
     {
 
     }
     public void toggle_case()
     {
-        
         if (isAnimating)
-        {
             return;
 
-        }
-        
+
         isAnimating = true;
 
+        if (!dangerOpen)
+        {
+            audioSource.PlayOneShot(doorSound);
+        }
+        else
+        {
+            audioSource.PlayOneShot(doorCloseSound);
+        }
+
         Sequence seq = DOTween.Sequence();
+
         seq.Append(dontbuton.DOLocalMoveY(0.267f, 0.1f).SetEase(Ease.OutQuad));
         seq.Append(dontbuton.DOLocalMoveY(0.3f, 0.3f).SetEase(Ease.OutBounce));
 
@@ -40,7 +50,9 @@ public class DangerDoorButton : MonoBehaviour
             case1.DOLocalRotate(new Vector3(-80, 0, 0), 0.4f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBack);
             case2.DOLocalRotate(new Vector3(-80, 0, 0), 0.4f, RotateMode.LocalAxisAdd).SetEase(Ease.OutBack);
         }
+
         dangerOpen = !dangerOpen;
+
         seq.OnComplete(() =>
         {
             isAnimating = false;
