@@ -46,7 +46,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.446
+    m_Value: 0.503
   smoothness:
     m_OverrideState: 0
     m_Value: 0.2
@@ -71,19 +71,19 @@ MonoBehaviour:
     m_Value: 1
   threshold:
     m_OverrideState: 1
-    m_Value: 1.03
+    m_Value: 0.73
   intensity:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 2
   scatter:
     m_OverrideState: 1
-    m_Value: 0.379
+    m_Value: 0.5
   clamp:
     m_OverrideState: 0
-    m_Value: 65472
+    m_Value: 0
   tint:
     m_OverrideState: 0
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_Value: {r: 0.55078053, g: 1, b: 0.514151, a: 1}
   highQualityFiltering:
     m_OverrideState: 0
     m_Value: 0
@@ -103,6 +103,25 @@ MonoBehaviour:
   dirtIntensity:
     m_OverrideState: 0
     m_Value: 5.54
+--- !u!114 &-1703412277427332144
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 221518ef91623a7438a71fef23660601, type: 3}
+  m_Name: WhiteBalance
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.WhiteBalance
+  active: 1
+  temperature:
+    m_OverrideState: 1
+    m_Value: 5.7
+  tint:
+    m_OverrideState: 0
+    m_Value: -100
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +140,8 @@ MonoBehaviour:
   - {fileID: -4877752967015291421}
   - {fileID: 6821355723774944275}
   - {fileID: 4560238453659967988}
+  - {fileID: -1703412277427332144}
+  - {fileID: 8149519027661141968}
 --- !u!114 &4560238453659967988
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -139,7 +160,7 @@ MonoBehaviour:
     m_Value: {x: 1, y: 1, z: 1, w: 0}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 0.9459611, y: 0.9687521, z: 1, w: -0.09331261}
+    m_Value: {x: 1, y: 0.96498036, z: 0.9584235, w: -0.155521}
   gain:
     m_OverrideState: 0
     m_Value: {x: 1, y: 1, z: 1, w: -0.015552103}
@@ -183,3 +204,19 @@ MonoBehaviour:
   maxNits:
     m_OverrideState: 0
     m_Value: 1000
+--- !u!114 &8149519027661141968
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81180773991d8724ab7f2d216912b564, type: 3}
+  m_Name: ChromaticAberration
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ChromaticAberration
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.137
