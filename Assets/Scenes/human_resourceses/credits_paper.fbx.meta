@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: a5b1ed5e19a87c242bf77e3565d78ccd
+guid: 3ea01a5e013c039449a79736a9fede6c
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: credits_paper_mat
+    second: {fileID: 2100000, guid: c4a2ddfc51a0d824593ae540aa32e5a7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mettalll
+    second: {fileID: 2100000, guid: 830a682e2a2344a468188889bbe67846, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using DG.Tweening;
 
 public class MainMenu3D_sc : MonoBehaviour
@@ -6,46 +7,63 @@ public class MainMenu3D_sc : MonoBehaviour
     [SerializeField] private Camera menuCamera;
     [SerializeField] private Transform door;
     [SerializeField] private ContractFPSController_sc fpsController;
-    [SerializeField] private float doorTargetZ = 157f;
     [SerializeField] private float doorOpenDuration = 1f;
     [SerializeField] private Ease doorEase = Ease.InOutSine;
+    [SerializeField] private float doorTargetZ = -220.74f;
     [SerializeField] private float maxDistance = 10f;
     [SerializeField] private LayerMask buttonLayer = ~0;
     private bool isBusy;
+    private physical_buttons currentHoveredButton;
+    [SerializeField] private GameObject creditsPanel;
+    [SerializeField] private GameObject exitPanel;
     private void Awake()
     {
-        if (menuCamera == null) 
+        if (menuCamera == null)
         {
             menuCamera = Camera.main;
-
         }
+        creditsPanel.SetActive(false);
+        exitPanel.SetActive(false);
     }
 
     private void Update()
     {
         if (isBusy)
         {
-
             return;
-        }
-
-        if (!Input.GetMouseButtonDown(0))
-        {
-            return;
-
         }
 
         Ray ray = menuCamera.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, buttonLayer))
-        {
-            physical_buttons button = hit.collider.GetComponentInParent<physical_buttons>();
+        physical_buttons detectedButton = null;
 
-            if (button != null)
-            {
-                HandleButton(button.buttonType);
-            }
+        if (Physics.Raycast(ray, out RaycastHit hit,
+            maxDistance, buttonLayer))
+        {
+            detectedButton =
+                hit.collider.GetComponentInParent<physical_buttons>();
         }
+
+        UpdateHover(detectedButton);
+
+        if (Input.GetMouseButtonDown(0) && detectedButton != null)
+        {
+            HandleButton(detectedButton.buttonType);
+        }
+    }
+
+    private void UpdateHover(physical_buttons newButton)
+    {
+        if (currentHoveredButton == newButton)
+            return;
+
+        if (currentHoveredButton != null)
+            currentHoveredButton.SetHovered(false);
+
+        currentHoveredButton = newButton;
+
+        if (currentHoveredButton != null)
+            currentHoveredButton.SetHovered(true);
     }
 
     private void HandleButton(MenuButtonType type)
@@ -56,16 +74,12 @@ public class MainMenu3D_sc : MonoBehaviour
                 OnPlay();
                 break;
 
-            case MenuButtonType.Settings:
-                Settings();
-                break;
-
             case MenuButtonType.Credits:
-                Credits();
+                OpenCredits();
                 break;
 
             case MenuButtonType.Exit:
-                OnExit();
+                OpenExitConfirmation();
                 break;
         }
     }
@@ -73,21 +87,52 @@ public class MainMenu3D_sc : MonoBehaviour
     private void OnPlay()
     {
         isBusy = true;
+
+        if (currentHoveredButton != null)
+        {
+            currentHoveredButton.SetHovered(false);
+            currentHoveredButton = null;
+        }
+
         Vector3 targetRotation = door.localEulerAngles;
         targetRotation.z = doorTargetZ;
-        door.DOLocalRotate(targetRotation, doorOpenDuration).SetEase(doorEase).OnComplete(() =>{fpsController.SetControllerEnabled(true);});
-    }
-    private void Credits()
-    {
 
-        Debug.Log("Credits açıldı");
+        door.DOLocalRotate(
+            targetRotation,
+            doorOpenDuration
+        )
+        .SetEase(doorEase)
+        .OnComplete(() =>
+        {
+            fpsController.SetControllerEnabled(true);
+        });
     }
-    private void Settings()
+    public void OpenCredits()
     {
-
-        Debug.Log("Settings açıldı");
+        isBusy=true;
+        creditsPanel.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
-    private void OnExit()
+    public void CloseCredits()
+    {
+        isBusy = false;
+        creditsPanel.SetActive(false);
+    }
+    public void OpenExitConfirmation()
+    {
+        isBusy = true;
+        exitPanel.SetActive(true);
+        creditsPanel.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+    public void CloseExitConfirmation()
+    {
+        isBusy = false;
+        exitPanel.SetActive(false);
+    }
+    public void ConfirmExit()
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
