@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: 338504c6193ba544a9d92aa851ffd2c6
+guid: 64de4d0302cf77f4d8b8e4d79d4fd7a6
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: emmisivee
+    second: {fileID: 2100000, guid: 5b5eca9e1d445cb4382a29ad3a8e7b8d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
