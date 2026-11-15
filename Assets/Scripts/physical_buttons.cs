@@ -1,7 +1,6 @@
 
 using UnityEngine;
 using DG.Tweening;
-
 public enum MenuButtonType
 {
     Play,
@@ -23,13 +22,10 @@ public class physical_buttons : MonoBehaviour
     private bool[][] hasEmission;
     private Vector3 startLocalPosition;
     private Tween movementTween;
-    private static readonly int EmissionColor =
-        Shader.PropertyToID("_EmissionColor");
-
+    private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
     private void Awake()
     {
         renderers = GetComponentsInChildren<Renderer>(true);
-
         materials = new Material[renderers.Length][];
         originalEmissionColors = new Color[renderers.Length][];
         hasEmission = new bool[renderers.Length][];
@@ -81,17 +77,15 @@ public class physical_buttons : MonoBehaviour
     private void SetMovement(bool hovered)
     {
         if (!liftOnHover)
+        {
             return;
-
+        }         
         movementTween?.Kill();
-
         Vector3 targetPosition = startLocalPosition;
-
         if (hovered)
         {
             targetPosition.y += hoverOffsetY;
         }
-
         movementTween = transform.DOLocalMove(targetPosition,hoverDuration).SetEase(Ease.OutSine);
     }
 

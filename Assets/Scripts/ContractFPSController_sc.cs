@@ -12,10 +12,10 @@ public class ContractFPSController_sc : MonoBehaviour
     private float verticalVelocity;
     private float cameraPitch;
     private bool lastEnabledState;
+    [SerializeField] private GameObject customCursor;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
-
         if (playerCamera == null)
         {
             playerCamera = GetComponentInChildren<Camera>();
@@ -29,7 +29,6 @@ public class ContractFPSController_sc : MonoBehaviour
         {
             SetControllerEnabled(controllerEnabled);
         }
-
         if (!controllerEnabled)
         {
             return;
@@ -42,18 +41,12 @@ public class ContractFPSController_sc : MonoBehaviour
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
-
         Vector3 move = transform.right * horizontal +transform.forward * vertical;
-
         move = Vector3.ClampMagnitude(move, 1f);
-
         if (characterController.isGrounded && verticalVelocity < 0f)verticalVelocity = -2f;
-
         verticalVelocity += gravity * Time.deltaTime;
-
         Vector3 velocity = move * moveSpeed;
         velocity.y = verticalVelocity;
-
         characterController.Move(velocity * Time.deltaTime);
     }
 
@@ -61,9 +54,7 @@ public class ContractFPSController_sc : MonoBehaviour
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
-
         transform.Rotate(Vector3.up * mouseX);
-
         cameraPitch -= mouseY;
         cameraPitch = Mathf.Clamp(cameraPitch,-maxLookAngle,maxLookAngle);
         playerCamera.transform.localRotation =Quaternion.Euler(cameraPitch, 0f, 0f);
@@ -72,12 +63,18 @@ public class ContractFPSController_sc : MonoBehaviour
     public void SetControllerEnabled(bool enabled)
     {
         controllerEnabled = enabled;
-        lastEnabledState = enabled;
-
-        Cursor.lockState = enabled ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.lockState = enabled? CursorLockMode.Locked: CursorLockMode.None;
         Cursor.visible = !enabled;
+        if (customCursor != null)
+        {
+            customCursor.SetActive(!enabled);
+        }
     }
-
+    public void SetCameraPitch(float pitch)
+    {
+        cameraPitch = pitch;
+        playerCamera.transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+    }
     public bool IsControllerEnabled()
     {
         return controllerEnabled;

@@ -32,16 +32,13 @@ public class MainMenu3D_sc : MonoBehaviour
         {
             return;
         }
-
         Ray ray = menuCamera.ScreenPointToRay(Input.mousePosition);
 
         physical_buttons detectedButton = null;
 
-        if (Physics.Raycast(ray, out RaycastHit hit,
-            maxDistance, buttonLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, buttonLayer))
         {
-            detectedButton =
-                hit.collider.GetComponentInParent<physical_buttons>();
+            detectedButton = hit.collider.GetComponentInParent<physical_buttons>();
         }
 
         UpdateHover(detectedButton);
@@ -55,15 +52,21 @@ public class MainMenu3D_sc : MonoBehaviour
     private void UpdateHover(physical_buttons newButton)
     {
         if (currentHoveredButton == newButton)
+        {
             return;
+        }
 
         if (currentHoveredButton != null)
+        {
             currentHoveredButton.SetHovered(false);
+        }
 
         currentHoveredButton = newButton;
 
         if (currentHoveredButton != null)
+        {
             currentHoveredButton.SetHovered(true);
+        }
     }
 
     private void HandleButton(MenuButtonType type)
@@ -93,16 +96,9 @@ public class MainMenu3D_sc : MonoBehaviour
             currentHoveredButton.SetHovered(false);
             currentHoveredButton = null;
         }
-
         Vector3 targetRotation = door.localEulerAngles;
         targetRotation.z = doorTargetZ;
-
-        door.DOLocalRotate(
-            targetRotation,
-            doorOpenDuration
-        )
-        .SetEase(doorEase)
-        .OnComplete(() =>
+        door.DOLocalRotate(targetRotation,doorOpenDuration).SetEase(doorEase).OnComplete(() =>
         {
             fpsController.SetControllerEnabled(true);
         });
