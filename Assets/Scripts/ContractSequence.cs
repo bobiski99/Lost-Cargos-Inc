@@ -70,7 +70,6 @@ public class ContractSequence : MonoBehaviour
         sequenceStarted = true;
         playerController.SetControllerEnabled(false);
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
         Vector3 targetRotation = new Vector3(player.eulerAngles.x,90f,player.eulerAngles.z);
         Sequence sequence = DOTween.Sequence();
         sequence.Join(player.DOMove(playerTarget.position, moveDuration).SetEase(Ease.InOutSine));

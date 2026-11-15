@@ -108,7 +108,6 @@ public class MainMenu3D_sc : MonoBehaviour
         isBusy=true;
         creditsPanel.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
     }
     public void CloseCredits()
     {

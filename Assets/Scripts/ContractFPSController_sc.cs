@@ -21,6 +21,7 @@ public class ContractFPSController_sc : MonoBehaviour
             playerCamera = GetComponentInChildren<Camera>();
         }
         SetControllerEnabled(controllerEnabled);
+        Cursor.visible = false;
     }
 
     private void Update()
@@ -64,7 +65,7 @@ public class ContractFPSController_sc : MonoBehaviour
     {
         controllerEnabled = enabled;
         Cursor.lockState = enabled? CursorLockMode.Locked: CursorLockMode.None;
-        Cursor.visible = !enabled;
+        Cursor.visible = false;
         if (customCursor != null)
         {
             customCursor.SetActive(!enabled);
