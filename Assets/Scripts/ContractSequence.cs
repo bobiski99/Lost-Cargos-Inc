@@ -24,7 +24,7 @@ public class ContractSequence : MonoBehaviour
     private bool sequenceStarted;
     private bool waitingForClick;
     private bool documentMoving;
-    private bool signingPetition;
+    private bool signingPetition;    
     private int dialogueStep;
     private SignatureDrawer activeDrawer;
     private Transform activeDocument;
@@ -36,6 +36,7 @@ public class ContractSequence : MonoBehaviour
     private Quaternion petitionOriginalRotation;
     private Vector3 petitionOriginalScale;
     private Transform petitionOriginalParent;
+    public bool tutorial_ready = false;
     public bool SignedPetition 
     {
         get; private set;
@@ -73,7 +74,6 @@ public class ContractSequence : MonoBehaviour
         Vector3 targetRotation = new Vector3(player.eulerAngles.x,90f,player.eulerAngles.z);
         Sequence sequence = DOTween.Sequence();
         sequence.Join(player.DOMove(playerTarget.position, moveDuration).SetEase(Ease.InOutSine));
-
         sequence.Join(player.DORotate(targetRotation, moveDuration).SetEase(Ease.InOutSine));
 
         if (playerCamera != null)
@@ -156,7 +156,6 @@ public class ContractSequence : MonoBehaviour
         }
         activeDrawer.OnFirstStroke = ShowConfirmButton;
         activeDrawer.SetDrawingEnabled(true);
-        Debug.Log("Signature mode enabled: " + activeDrawer.name);
     }
 
     private void ShowConfirmButton()
@@ -230,6 +229,7 @@ public class ContractSequence : MonoBehaviour
 
     private void FinishSequence()
     {
+        tutorial_ready = true;
         dialoguePanel.SetActive(false);
         playerController.SetControllerEnabled(true);
         Cursor.lockState = CursorLockMode.Locked;
@@ -237,8 +237,10 @@ public class ContractSequence : MonoBehaviour
     }
     private void MoveDocumentToHand(Transform document,Transform handAnchor,System.Action onComplete)
     {
+
         documentMoving = true;
-        document.DOKill();
+
+                document.DOKill();
         DOTween.Sequence().Join(document.DOMove(handAnchor.position, documentMoveDuration).SetEase(Ease.OutCubic)).Join(document.DORotateQuaternion(handAnchor.rotation,
                     documentMoveDuration).SetEase(Ease.OutCubic)).OnComplete(() =>
             {
